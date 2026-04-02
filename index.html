@@ -1,0 +1,2075 @@
+<!DOCTYPE html>
+<html lang="uz" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>FizAI ⚡</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════
+   CSS VARIABLES — THEME SYSTEM
+══════════════════════════════════════════ */
+:root {
+  --bg: #ffffff;
+  --bg2: #f8faff;
+  --bg3: #f1f5fe;
+  --card: #ffffff;
+  --border: #e8ecf4;
+  --border2: #d1d8ee;
+  --text: #0f1221;
+  --text2: #5a6482;
+  --text3: #9aa3be;
+  --ac: #4f46e5;
+  --ac2: #6366f1;
+  --ac3: #818cf8;
+  --ac-bg: #eef0fd;
+  --ac-bg2: #e0e3fb;
+  --green: #059669;
+  --green-bg: #ecfdf5;
+  --orange: #ea580c;
+  --orange-bg: #fff7ed;
+  --red: #dc2626;
+  --red-bg: #fef2f2;
+  --gold: #d97706;
+  --gold-bg: #fffbeb;
+  --shadow: 0 1px 4px rgba(15,18,33,.06), 0 4px 16px rgba(15,18,33,.04);
+  --shadow-md: 0 4px 12px rgba(15,18,33,.1), 0 8px 32px rgba(15,18,33,.06);
+  --shadow-ac: 0 4px 16px rgba(79,70,229,.3);
+  --radius: 16px;
+  --radius-sm: 12px;
+  --radius-xs: 8px;
+}
+[data-theme="dark"] {
+  --bg: #0c0d1a;
+  --bg2: #111224;
+  --bg3: #181930;
+  --card: #141527;
+  --border: #1e2040;
+  --border2: #282a50;
+  --text: #eef0ff;
+  --text2: #8b90b8;
+  --text3: #4a4f72;
+  --ac: #6366f1;
+  --ac2: #818cf8;
+  --ac3: #a5b4fc;
+  --ac-bg: #1a1c3a;
+  --ac-bg2: #222450;
+  --green: #34d399;
+  --green-bg: #0a2e20;
+  --orange: #fb923c;
+  --orange-bg: #2a1a0e;
+  --red: #f87171;
+  --red-bg: #2a1010;
+  --gold: #fbbf24;
+  --gold-bg: #2a2010;
+  --shadow: 0 1px 4px rgba(0,0,0,.3);
+  --shadow-md: 0 4px 24px rgba(0,0,0,.5);
+  --shadow-ac: 0 4px 16px rgba(99,102,241,.4);
+}
+/* ══════════════════════════════════════════
+   BASE
+══════════════════════════════════════════ */
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html,body { height:100%; overflow:hidden; }
+body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); font-size:14px; -webkit-font-smoothing:antialiased; transition:background .3s,color .3s; }
+button { font-family:'Inter',sans-serif; cursor:pointer; border:none; background:none; }
+input,textarea { font-family:'Inter',sans-serif; }
+.screen { display:none; height:100dvh; flex-direction:column; overflow:hidden; }
+.screen.on { display:flex; }
+
+/* ══════════════════════════════════════════
+   LANDING — ATOM ANIMATION
+══════════════════════════════════════════ */
+#sl {
+  background:var(--bg);
+  align-items:center; justify-content:center;
+  overflow-y:auto; position:relative;
+}
+.land-bg { position:absolute; inset:0; overflow:hidden; pointer-events:none; }
+.land-bg-glow {
+  position:absolute; top:-20%; left:50%; transform:translateX(-50%);
+  width:600px; height:600px;
+  background:radial-gradient(circle, rgba(79,70,229,.08) 0%, transparent 70%);
+  border-radius:50%;
+}
+.land-inner {
+  position:relative; z-index:1;
+  width:100%; max-width:380px;
+  padding:50px 28px 44px;
+  display:flex; flex-direction:column; align-items:center; text-align:center;
+  min-height:100dvh; justify-content:center;
+}
+/* Atom */
+.atom-wrap {
+  position:relative; width:160px; height:160px;
+  margin-bottom:28px; flex-shrink:0;
+}
+.nucleus {
+  position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+  width:38px; height:38px;
+  background:linear-gradient(135deg,var(--ac),#7c3aed);
+  border-radius:50%; z-index:2;
+  box-shadow:0 0 0 8px rgba(79,70,229,.12), 0 0 40px rgba(79,70,229,.8), 0 0 80px rgba(79,70,229,.35);
+  animation:nucGlow 2.5s ease-in-out infinite;
+}
+@keyframes nucGlow {
+  0%,100% { box-shadow:0 0 0 8px rgba(79,70,229,.12),0 0 40px rgba(79,70,229,.8),0 0 80px rgba(79,70,229,.35); }
+  50% { box-shadow:0 0 0 14px rgba(99,102,241,.18),0 0 60px rgba(99,102,241,1),0 0 120px rgba(99,102,241,.5); }
+}
+.orbit {
+  position:absolute; top:50%; left:50%;
+  border-radius:50%;
+  border:2px solid rgba(79,70,229,.3);
+}
+.orbit::after {
+  content:''; position:absolute;
+  width:12px; height:12px;
+  background:#6366f1; border-radius:50%;
+  box-shadow:0 0 14px #6366f1, 0 0 28px rgba(99,102,241,.7);
+  top:-6px; left:50%; transform:translateX(-50%);
+}
+.orbit-1 {
+  width:88px; height:88px;
+  margin-left:-44px; margin-top:-44px;
+  animation:spin1 2.2s linear infinite;
+}
+.orbit-2 {
+  width:124px; height:124px;
+  margin-left:-62px; margin-top:-62px;
+  transform:rotate(60deg);
+  animation:spin2 3.3s linear infinite;
+}
+.orbit-3 {
+  width:160px; height:160px;
+  margin-left:-80px; margin-top:-80px;
+  transform:rotate(120deg);
+  animation:spin3 4.6s linear infinite;
+}
+.orbit-3::after { background:#818cf8; box-shadow:0 0 14px #818cf8,0 0 28px rgba(129,140,248,.6); }
+@keyframes spin1 { to { transform:rotate(360deg); } }
+@keyframes spin2 { from { transform:rotate(60deg); } to { transform:rotate(420deg); } }
+@keyframes spin3 { from { transform:rotate(120deg); } to { transform:rotate(480deg); } }
+.land-tag { font-size:.7rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--ac); margin-bottom:12px; }
+.land-h1 { font-size:1.95rem; font-weight:900; line-height:1.2; margin-bottom:8px; color:var(--text); letter-spacing:-.5px; }
+.land-h1 em { font-style:normal; background:linear-gradient(135deg,var(--ac),#7c3aed); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.land-sub { color:var(--text2); font-size:.88rem; line-height:1.7; margin-bottom:24px; max-width:290px; }
+.land-feats { display:flex; gap:7px; justify-content:center; flex-wrap:wrap; margin-bottom:30px; }
+.feat {
+  background:var(--ac-bg); border:1px solid var(--ac-bg2);
+  border-radius:50px; padding:6px 12px;
+  font-size:.72rem; font-weight:600; color:var(--ac);
+  display:flex; align-items:center; gap:4px;
+}
+.land-btns { width:100%; }
+.btn-main {
+  display:block; width:100%; padding:15px; border-radius:var(--radius-sm);
+  background:linear-gradient(135deg,var(--ac),#7c3aed);
+  color:#fff; font-size:.95rem; font-weight:700;
+  margin-bottom:10px;
+  box-shadow:var(--shadow-ac);
+  transition:transform .15s,opacity .15s;
+}
+.btn-main:active { transform:scale(.98); opacity:.9; }
+.btn-sec {
+  display:block; width:100%; padding:13px; border-radius:var(--radius-sm);
+  background:var(--bg3); border:1.5px solid var(--border);
+  color:var(--text2); font-size:.9rem; font-weight:600;
+  margin-bottom:14px; transition:background .2s,border-color .2s;
+}
+.btn-sec:hover { border-color:var(--ac2); }
+.land-note { font-size:.71rem; color:var(--text3); }
+
+/* ══════════════════════════════════════════
+   AUTH
+══════════════════════════════════════════ */
+#sa { background:var(--bg); overflow-y:auto; }
+.auth-w { width:100%; max-width:360px; margin:0 auto; padding:20px 24px 48px; }
+.auth-top { display:flex; align-items:center; padding:6px 0 30px; position:relative; }
+.auth-x { color:var(--text3); font-size:1.1rem; padding:4px 8px 4px 0; transition:color .2s; }
+.auth-x:hover { color:var(--text); }
+.auth-brand {
+  position:absolute; left:50%; transform:translateX(-50%);
+  display:flex; align-items:center; gap:7px;
+}
+.ab-ic {
+  width:28px; height:28px;
+  background:linear-gradient(135deg,var(--ac),#7c3aed);
+  border-radius:8px; display:flex; align-items:center; justify-content:center;
+  font-size:.9rem;
+}
+.ab-nm { font-weight:800; font-size:.95rem; color:var(--text); }
+.auth-h { font-size:1.55rem; font-weight:800; margin-bottom:4px; color:var(--text); letter-spacing:-.3px; }
+.auth-sub { color:var(--text2); font-size:.84rem; margin-bottom:26px; }
+.ifield { margin-bottom:18px; }
+.ifield label { display:block; font-size:.71rem; font-weight:700; color:var(--text2); margin-bottom:7px; text-transform:uppercase; letter-spacing:.4px; }
+.ifield-input { position:relative; }
+.ifield input {
+  width:100%; background:var(--bg3); border:1.5px solid var(--border);
+  border-radius:var(--radius-sm); padding:13px 44px 13px 16px;
+  color:var(--text); font-size:.93rem; transition:border-color .2s,background .2s;
+}
+.ifield input:focus { outline:none; border-color:var(--ac); background:var(--bg); }
+.ifield input::placeholder { color:var(--text3); }
+.eye-btn {
+  position:absolute; right:14px; top:50%; transform:translateY(-50%);
+  color:var(--text3); font-size:1rem; cursor:pointer; padding:2px;
+  transition:color .2s; background:none; border:none;
+}
+.eye-btn:hover { color:var(--text2); }
+.saved-accs { background:var(--ac-bg); border:1.5px solid var(--ac-bg2); border-radius:var(--radius-sm); padding:12px; margin-bottom:18px; }
+.saved-accs p { font-size:.71rem; font-weight:700; color:var(--ac); margin-bottom:8px; text-transform:uppercase; letter-spacing:.5px; }
+.saved-acc {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:8px 10px; background:var(--card); border-radius:var(--radius-xs);
+  cursor:pointer; transition:background .15s; margin-bottom:4px;
+}
+.saved-acc:last-child { margin-bottom:0; }
+.saved-acc:active { background:var(--bg3); }
+.saved-acc-l { display:flex; align-items:center; gap:8px; }
+.saved-acc-av { width:28px; height:28px; background:linear-gradient(135deg,var(--ac),#7c3aed); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:.85rem; }
+.saved-acc span { font-size:.85rem; font-weight:600; color:var(--text); }
+.saved-acc small { font-size:.72rem; color:var(--ac); font-weight:600; }
+.btn-auth {
+  width:100%; padding:14px; border-radius:var(--radius-sm);
+  background:linear-gradient(135deg,var(--ac),#7c3aed);
+  color:#fff; font-size:.93rem; font-weight:700;
+  margin-bottom:10px; box-shadow:var(--shadow-ac); transition:opacity .15s;
+}
+.btn-auth:active { opacity:.88; }
+.btn-demo {
+  width:100%; padding:12px; border-radius:var(--radius-sm);
+  background:var(--bg3); border:1.5px solid var(--border);
+  color:var(--text2); font-size:.84rem; font-weight:500;
+  margin-bottom:16px; display:flex; align-items:center; justify-content:center; gap:6px;
+  transition:border-color .2s;
+}
+.btn-demo:hover { border-color:var(--ac2); }
+.auth-sw { text-align:center; color:var(--text2); font-size:.83rem; margin-bottom:12px; }
+.auth-sw a { color:var(--ac); cursor:pointer; font-weight:600; }
+.auth-back { text-align:center; font-size:.79rem; color:var(--text3); cursor:pointer; display:flex; align-items:center; justify-content:center; gap:4px; }
+.auth-back:hover { color:var(--text2); }
+
+/* ══════════════════════════════════════════
+   ASSESSMENT
+══════════════════════════════════════════ */
+#sas { background:var(--bg); overflow-y:auto; }
+.as-w { max-width:520px; margin:0 auto; padding:24px 20px 48px; width:100%; }
+.as-hdr { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
+.as-hdr h2 { font-size:1.1rem; font-weight:700; color:var(--text); }
+.as-cnt { font-size:.78rem; color:var(--text3); font-weight:500; }
+.prog-wrap { height:5px; background:var(--bg3); border-radius:50px; margin-bottom:24px; overflow:hidden; }
+.prog-f { height:100%; background:linear-gradient(90deg,var(--ac),#7c3aed); border-radius:50px; transition:width .5s ease; }
+.lv-pill { display:inline-flex; align-items:center; padding:4px 12px; border-radius:50px; font-size:.68rem; font-weight:700; text-transform:uppercase; letter-spacing:.5px; margin-bottom:14px; }
+.lv-e { background:var(--green-bg); color:var(--green); }
+.lv-m { background:var(--gold-bg); color:var(--gold); }
+.lv-h { background:var(--red-bg); color:var(--red); }
+.q-txt { font-size:1rem; line-height:1.65; font-weight:600; color:var(--text); margin-bottom:20px; }
+.q-opts { display:grid; gap:9px; }
+.qo {
+  background:var(--bg3); border:1.5px solid var(--border);
+  border-radius:var(--radius-sm); padding:13px 15px;
+  color:var(--text); text-align:left; font-size:.88rem; font-weight:500;
+  transition:all .2s; display:flex; align-items:center; gap:11px;
+}
+.qo:hover:not(:disabled) { border-color:var(--ac); background:var(--ac-bg); }
+.qo.ok { border-color:var(--green)!important; background:var(--green-bg)!important; color:var(--green)!important; }
+.qo.ng { border-color:var(--red)!important; background:var(--red-bg)!important; color:var(--red)!important; }
+.qo-l {
+  width:28px; height:28px; border-radius:7px;
+  background:var(--card); border:1.5px solid var(--border);
+  display:flex; align-items:center; justify-content:center;
+  font-size:.73rem; font-weight:700; flex-shrink:0; color:var(--text2);
+}
+
+/* ══════════════════════════════════════════
+   RESULT
+══════════════════════════════════════════ */
+#sre { background:var(--bg); align-items:center; justify-content:center; overflow-y:auto; }
+.res-card {
+  width:100%; max-width:380px;
+  background:var(--card); border:1.5px solid var(--border);
+  border-radius:var(--radius); padding:28px 22px; margin:20px;
+  box-shadow:var(--shadow-md); animation:slideUp .4s ease;
+}
+.res-em { font-size:2.8rem; margin-bottom:10px; text-align:center; }
+.res-card h2 { font-size:1.5rem; font-weight:800; margin-bottom:4px; text-align:center; letter-spacing:-.3px; color:var(--text); }
+.res-lvl {
+  display:block; text-align:center; width:fit-content; margin:0 auto 14px;
+  padding:5px 16px; border-radius:50px;
+  background:var(--ac-bg); color:var(--ac); font-size:.78rem; font-weight:700;
+}
+.res-desc { color:var(--text2); font-size:.84rem; line-height:1.65; margin-bottom:20px; text-align:center; }
+.time-q { margin-bottom:16px; }
+.time-q label { font-size:.75rem; font-weight:600; color:var(--text2); display:block; margin-bottom:8px; }
+.time-opts { display:flex; gap:6px; flex-wrap:wrap; }
+.topt {
+  background:var(--bg3); border:1.5px solid var(--border);
+  border-radius:var(--radius-xs); padding:7px 14px;
+  font-size:.8rem; font-weight:500; color:var(--text2); transition:all .2s;
+}
+.topt.sel { border-color:var(--ac); color:var(--ac); background:var(--ac-bg); font-weight:700; }
+.road-prev { margin-bottom:20px; }
+.road-prev h4 { font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:var(--text3); margin-bottom:8px; }
+.rw { background:var(--bg3); border:1.5px solid var(--border); border-radius:var(--radius-xs); padding:10px 14px; margin-bottom:5px; }
+.rw .rwl { font-size:.66rem; color:var(--ac); font-weight:700; margin-bottom:2px; }
+.rw .rwt { font-size:.85rem; font-weight:500; color:var(--text); }
+
+/* ══════════════════════════════════════════
+   MAIN APP
+══════════════════════════════════════════ */
+#sapp { background:var(--bg2); }
+.topbar {
+  background:var(--card); border-bottom:1px solid var(--border);
+  padding:12px 18px; display:flex; align-items:center; justify-content:space-between;
+  flex-shrink:0;
+}
+.tb-logo { font-weight:800; font-size:1.1rem; color:var(--text); display:flex; align-items:center; gap:6px; }
+.tb-logo-ic {
+  width:30px; height:30px; background:linear-gradient(135deg,var(--ac),#7c3aed);
+  border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:.9rem;
+}
+.tb-r { display:flex; align-items:center; gap:8px; }
+.str-chip {
+  background:var(--orange-bg); border:1px solid rgba(234,88,12,.2);
+  border-radius:50px; padding:5px 10px;
+  font-size:.74rem; color:var(--orange); font-weight:700;
+  display:flex; align-items:center; gap:3px;
+}
+.prem-btn {
+  background:linear-gradient(135deg,#f59e0b,#ef4444);
+  color:#fff; padding:6px 13px; border-radius:50px;
+  font-size:.72rem; font-weight:700; transition:opacity .2s;
+}
+.tabs { flex:1; overflow:hidden; }
+.tc { display:none; height:100%; overflow-y:auto; padding:14px 14px 72px; }
+.tc.on { display:block; }
+.tc::-webkit-scrollbar { width:0; }
+.bnav {
+  display:flex; background:var(--card);
+  border-top:1px solid var(--border); flex-shrink:0;
+}
+.nv {
+  flex:1; background:none; color:var(--text3);
+  padding:9px 4px 7px; font-size:.6rem; font-weight:500;
+  display:flex; flex-direction:column; align-items:center; gap:3px;
+  border-top:2px solid transparent; transition:all .2s;
+}
+.nv.on { color:var(--ac); border-top-color:var(--ac); }
+.nv svg { width:18px; height:18px; }
+
+/* HOME */
+.road-hdr {
+  background:linear-gradient(135deg,var(--ac),#7c3aed);
+  border-radius:var(--radius); padding:16px; margin-bottom:14px; color:#fff;
+}
+.road-hdr h3 { font-size:.97rem; font-weight:700; margin-bottom:3px; opacity:.9; }
+.road-hdr p { font-size:.78rem; opacity:.75; }
+.road-hdr b { opacity:1; font-weight:700; }
+.road-stats { display:flex; gap:16px; margin-top:10px; }
+.rst { font-size:.74rem; opacity:.8; }
+.rst b { font-size:1.1rem; font-weight:800; display:block; opacity:1; }
+.blk-lbl {
+  font-size:.66rem; font-weight:700; text-transform:uppercase;
+  letter-spacing:1px; color:var(--text3); margin:18px 0 7px;
+}
+.lr {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:var(--radius-sm); padding:12px 14px; margin-bottom:5px;
+  display:flex; align-items:center; gap:11px; cursor:pointer;
+  transition:all .2s; box-shadow:var(--shadow);
+}
+.lr:active:not(.lk) { transform:scale(.99); }
+.lr.lk { opacity:.35; cursor:not-allowed; }
+.lr.dn { border-color:rgba(5,150,105,.25); }
+.lr.act { border-color:var(--ac); background:var(--ac-bg); }
+.lr.tmr { opacity:.45; cursor:default; }
+.ln {
+  width:36px; height:36px; border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  font-weight:700; font-size:.82rem; flex-shrink:0;
+}
+.ln-d { background:var(--green-bg); color:var(--green); }
+.ln-a { background:var(--ac-bg); color:var(--ac); }
+.ln-l { background:var(--bg3); color:var(--text3); font-size:.9rem; }
+.ln-t { background:var(--gold-bg); color:var(--gold); font-size:.6rem; text-align:center; line-height:1.3; }
+.li { flex:1; min-width:0; }
+.li h4 { font-size:.85rem; font-weight:600; color:var(--text); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.li p { font-size:.72rem; color:var(--text2); margin-top:1px; }
+.lt { font-size:.68rem; font-weight:500; color:var(--text3); white-space:nowrap; }
+
+/* STATS */
+.sec-title { font-size:1.15rem; font-weight:800; margin-bottom:14px; color:var(--text); }
+.sg { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:13px; }
+.sc {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:var(--radius-sm); padding:14px; box-shadow:var(--shadow);
+}
+.sc .sl { font-size:.68rem; font-weight:600; text-transform:uppercase; letter-spacing:.3px; color:var(--text3); margin-bottom:3px; }
+.sc .sv { font-size:1.5rem; font-weight:800; }
+.sc .ss { font-size:.7rem; color:var(--text2); margin-top:1px; }
+.sv-blue { color:var(--ac); } .sv-g { color:var(--green); } .sv-o { color:var(--orange); } .sv-p { color:#7c3aed; }
+.ai-tip {
+  background:var(--ac-bg); border:1px solid var(--ac-bg2);
+  border-radius:var(--radius-sm); padding:13px; margin-bottom:13px;
+}
+.ai-tip .ah { font-size:.68rem; font-weight:700; color:var(--ac); margin-bottom:4px; }
+.ai-tip p { font-size:.83rem; color:var(--text2); line-height:1.6; }
+.chart-box {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:var(--radius-sm); padding:14px; margin-bottom:13px; box-shadow:var(--shadow);
+}
+.chart-box h4 { font-size:.8rem; font-weight:600; color:var(--text2); margin-bottom:12px; }
+.bars { display:flex; align-items:flex-end; gap:5px; height:60px; }
+.bc { flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; height:100%; justify-content:flex-end; }
+.bf { width:100%; border-radius:4px 4px 0 0; background:linear-gradient(180deg,var(--ac),#7c3aed); min-height:2px; transition:height 1s ease; }
+.bl { font-size:.6rem; color:var(--text3); font-weight:500; }
+.prem-blk {
+  background:var(--gold-bg); border:1px solid rgba(217,119,6,.2);
+  border-radius:var(--radius-sm); padding:14px; text-align:center; margin-top:12px;
+}
+.prem-blk p { font-size:.82rem; color:var(--gold); margin-bottom:8px; font-weight:500; }
+.wk-card {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:var(--radius-sm); padding:14px; box-shadow:var(--shadow);
+}
+.wk-card h4 { font-size:.85rem; font-weight:700; margin-bottom:10px; color:var(--text); }
+.wr { display:flex; justify-content:space-between; padding:7px 0; border-bottom:1px solid var(--border); font-size:.8rem; }
+.wr:last-child { border:none; }
+.wl { color:var(--text2); } .wv { font-weight:600; color:var(--text); }
+
+/* AI TAB */
+.ai-outer { display:flex; flex-direction:column; height:calc(100dvh - 148px); }
+.chips { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px; flex-shrink:0; }
+.chip {
+  background:var(--ac-bg); border:1px solid var(--ac-bg2);
+  border-radius:50px; padding:6px 12px;
+  font-size:.73rem; font-weight:600; color:var(--ac);
+  cursor:pointer; transition:all .2s;
+}
+.chip:active { background:var(--ac-bg2); }
+.msgs { flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:9px; padding:4px 0; }
+.msgs::-webkit-scrollbar { width:0; }
+.msg { max-width:88%; padding:11px 14px; border-radius:16px; font-size:.85rem; line-height:1.6; animation:slideUp .25s ease; }
+.m-ai { background:var(--bg3); border:1px solid var(--border); color:var(--text); align-self:flex-start; border-bottom-left-radius:4px; }
+.m-u { background:linear-gradient(135deg,var(--ac),#7c3aed); color:#fff; align-self:flex-end; border-bottom-right-radius:4px; }
+.m-ai .al { font-size:.67rem; font-weight:700; color:var(--ac); margin-bottom:3px; }
+.m-err { background:var(--red-bg); border-color:var(--red)!important; color:var(--red)!important; }
+.typing { display:flex; gap:3px; padding:2px 0; }
+.typing span { width:6px; height:6px; background:var(--text3); border-radius:50%; animation:bnc 1.2s infinite; }
+.typing span:nth-child(2) { animation-delay:.2s; }
+.typing span:nth-child(3) { animation-delay:.4s; }
+@keyframes bnc { 0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-6px)} }
+.ai-ftr { padding:10px 0 0; border-top:1px solid var(--border); flex-shrink:0; }
+.quota-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:7px; font-size:.72rem; color:var(--text3); }
+.q-dots { display:flex; gap:3px; }
+.qd { width:7px; height:7px; border-radius:50%; background:var(--border); }
+.qd.u { background:var(--ac); } .qd.x { background:var(--gold); }
+.ai-ir { display:flex; gap:7px; }
+.ai-in {
+  flex:1; background:var(--bg3); border:1.5px solid var(--border);
+  border-radius:12px; padding:10px 14px; color:var(--text);
+  font-size:.85rem; resize:none; max-height:70px; transition:border-color .2s;
+}
+.ai-in:focus { outline:none; border-color:var(--ac); background:var(--bg); }
+.ai-in::placeholder { color:var(--text3); }
+.send-b {
+  width:40px; height:40px;
+  background:linear-gradient(135deg,var(--ac),#7c3aed);
+  border-radius:11px; color:#fff;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  transition:opacity .2s;
+}
+.send-b:active { opacity:.8; }
+.send-b svg { width:17px; height:17px; }
+.ad-btn {
+  width:100%; padding:9px; border-radius:10px;
+  background:var(--gold-bg); border:1px solid rgba(217,119,6,.25);
+  color:var(--gold); font-size:.76rem; font-weight:600;
+  margin-top:7px; transition:background .2s;
+}
+.ad-btn:active { background:var(--gold-bg); opacity:.8; }
+
+/* SETTINGS — Disciplino style */
+.set-profile {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:var(--radius); padding:16px;
+  display:flex; align-items:center; gap:12px;
+  margin-bottom:8px; cursor:pointer; box-shadow:var(--shadow);
+  transition:background .15s;
+}
+.set-profile:active { background:var(--bg3); }
+.set-av {
+  width:52px; height:52px; border-radius:50%;
+  background:linear-gradient(135deg,var(--ac),#7c3aed);
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.4rem; flex-shrink:0;
+}
+.set-pinfo { flex:1; min-width:0; }
+.set-pinfo h3 { font-size:.95rem; font-weight:700; color:var(--text); }
+.set-pinfo p { font-size:.75rem; color:var(--text2); margin-top:1px; }
+.plan-badge {
+  padding:4px 10px; border-radius:50px;
+  font-size:.68rem; font-weight:700; white-space:nowrap; flex-shrink:0;
+}
+.plan-free { background:var(--gold-bg); color:var(--gold); }
+.plan-prem { background:var(--ac-bg); color:var(--ac); }
+.set-st {
+  font-size:.69rem; font-weight:700; text-transform:uppercase;
+  letter-spacing:1px; color:var(--text3); margin:18px 0 7px; padding:0 2px;
+}
+.si {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:var(--radius-sm); padding:12px 15px;
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:4px; cursor:pointer; box-shadow:var(--shadow); transition:background .15s;
+}
+.si:active { background:var(--bg3); }
+.si-l { display:flex; align-items:center; gap:11px; }
+.si-ic {
+  width:32px; height:32px; background:var(--bg3);
+  border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:.95rem;
+}
+.si-tx h4 { font-size:.84rem; font-weight:600; color:var(--text); }
+.si-tx p { font-size:.72rem; color:var(--text3); margin-top:1px; }
+.si-r { font-size:.78rem; color:var(--text3); display:flex; align-items:center; gap:4px; }
+.tgl {
+  width:40px; height:22px; background:var(--border2);
+  border-radius:50px; position:relative; cursor:pointer; transition:background .3s; flex-shrink:0;
+}
+.tgl.on { background:var(--ac); }
+.tgl::after {
+  content:''; position:absolute; top:2px; left:2px;
+  width:18px; height:18px; background:#fff; border-radius:50%;
+  transition:transform .3s; box-shadow:0 1px 4px rgba(0,0,0,.2);
+}
+.tgl.on::after { transform:translateX(18px); }
+.seg-btns { display:flex; gap:6px; background:var(--bg3); border-radius:var(--radius-xs); padding:4px; }
+.seg-btn {
+  flex:1; padding:7px 8px; border-radius:6px;
+  font-size:.77rem; font-weight:500; color:var(--text2);
+  transition:all .2s; text-align:center;
+}
+.seg-btn.sel { background:var(--card); color:var(--ac); font-weight:700; box-shadow:var(--shadow); }
+.tg-link { display:flex; align-items:center; gap:5px; color:var(--ac); font-size:.82rem; font-weight:600; text-decoration:none; }
+.ver-txt { text-align:center; font-size:.7rem; color:var(--border2); margin-top:20px; padding-bottom:20px; }
+
+/* LESSON */
+#sls { background:var(--bg); }
+.les-nav {
+  background:var(--card); border-bottom:1px solid var(--border);
+  padding:11px 16px; display:flex; align-items:center; gap:10px; flex-shrink:0;
+}
+.bk-btn {
+  width:32px; height:32px; background:var(--bg3);
+  border-radius:9px; display:flex; align-items:center; justify-content:center;
+  color:var(--text); transition:background .15s; flex-shrink:0;
+}
+.bk-btn:active { background:var(--border); }
+.les-nav h3 { font-size:.9rem; font-weight:600; color:var(--text); flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.les-tabs {
+  display:flex; border-bottom:1px solid var(--border); flex-shrink:0;
+  overflow-x:auto; scrollbar-width:none; background:var(--card);
+}
+.les-tabs::-webkit-scrollbar { display:none; }
+.ltab { padding:10px 14px; background:none; font-size:.78rem; font-weight:500; color:var(--text3); white-space:nowrap; border-bottom:2px solid transparent; transition:all .2s; }
+.ltab.on { color:var(--ac); border-bottom-color:var(--ac); }
+.ls { display:none; flex:1; overflow-y:auto; padding:16px 16px 88px; }
+.ls::-webkit-scrollbar { width:0; }
+.ls.on { display:block; }
+.l-vis {
+  background:linear-gradient(135deg,var(--ac-bg),var(--ac-bg2));
+  border:1px solid var(--ac-bg2); border-radius:var(--radius);
+  height:150px; display:flex; align-items:center; justify-content:center;
+  margin-bottom:20px; overflow:hidden;
+}
+.fml-wrap { text-align:center; }
+.fml-txt {
+  font-size:1.7rem; font-weight:900; color:var(--ac); letter-spacing:-.5px;
+  animation:fmlGlow 2.5s ease-in-out infinite;
+}
+@keyframes fmlGlow {
+  0%,100% { text-shadow:0 0 20px rgba(99,102,241,.3); }
+  50% { text-shadow:0 0 40px rgba(99,102,241,.6),0 0 60px rgba(99,102,241,.2); }
+}
+.fml-sub { font-size:.77rem; color:var(--ac2); margin-top:6px; font-weight:500; }
+/* Rich lesson content */
+.l-h3 { font-size:1.05rem; font-weight:800; margin-bottom:12px; color:var(--text); letter-spacing:-.2px; }
+.l-p { color:var(--text2); font-size:.88rem; line-height:1.75; margin-bottom:14px; }
+.cpt {
+  background:var(--ac-bg); border-left:3px solid var(--ac);
+  border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+  padding:14px 16px; margin:14px 0;
+}
+.cpt h4 { font-size:.72rem; font-weight:700; color:var(--ac); margin-bottom:5px; text-transform:uppercase; letter-spacing:.5px; }
+.cpt p { color:var(--text); font-size:.87rem; line-height:1.65; margin:0; }
+.formula-box {
+  background:var(--bg3); border:1.5px solid var(--border);
+  border-radius:var(--radius-sm); padding:14px 16px; margin:14px 0;
+  display:flex; align-items:center; gap:12px;
+}
+.formula-box .f-eq { font-size:1.1rem; font-weight:800; color:var(--ac); flex-shrink:0; }
+.formula-box .f-desc { font-size:.82rem; color:var(--text2); line-height:1.5; }
+.did-you-know {
+  background:linear-gradient(135deg,#fffbeb,#fef3c7);
+  border:1px solid #fde68a; border-radius:var(--radius-sm);
+  padding:14px; margin:14px 0;
+}
+[data-theme="dark"] .did-you-know { background:var(--gold-bg); border-color:rgba(217,119,6,.3); }
+.did-you-know h4 { font-size:.72rem; font-weight:700; color:var(--gold); margin-bottom:5px; }
+.did-you-know p { font-size:.85rem; color:var(--text2); line-height:1.6; margin:0; }
+/* WHY section */
+.why-hero {
+  background:linear-gradient(135deg,var(--green-bg),#d1fae5);
+  border:1px solid rgba(5,150,105,.2); border-radius:var(--radius);
+  padding:16px; margin-bottom:14px;
+}
+[data-theme="dark"] .why-hero { background:var(--green-bg); }
+.why-hero h4 { font-size:.72rem; font-weight:700; color:var(--green); text-transform:uppercase; letter-spacing:.5px; margin-bottom:7px; }
+.why-hero p { color:var(--text2); font-size:.88rem; line-height:1.65; }
+.why-example {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:var(--radius-sm); padding:14px; margin-bottom:9px;
+  box-shadow:var(--shadow);
+}
+.why-example .we-hdr { display:flex; align-items:center; gap:9px; margin-bottom:7px; }
+.we-ico { font-size:1.3rem; flex-shrink:0; }
+.we-ttl { font-size:.82rem; font-weight:700; color:var(--text); }
+.we-body { font-size:.83rem; color:var(--text2); line-height:1.6; }
+.we-highlight { background:var(--ac-bg); color:var(--ac); font-weight:600; padding:2px 6px; border-radius:4px; font-size:.8rem; }
+/* Test */
+.les-chat { display:flex; flex-direction:column; height:calc(100dvh - 172px); }
+.les-msgs { flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:9px; padding:4px 0; }
+.les-msgs::-webkit-scrollbar { width:0; }
+.les-ftr { padding:9px 0 0; border-top:1px solid var(--border); display:flex; gap:7px; flex-shrink:0; }
+.tq { background:var(--card); border:1px solid var(--border); border-radius:var(--radius-sm); padding:16px; margin-bottom:10px; box-shadow:var(--shadow); }
+.tq-num { font-size:.68rem; font-weight:700; color:var(--text3); margin-bottom:5px; text-transform:uppercase; letter-spacing:.5px; }
+.tq-txt { font-size:.9rem; font-weight:600; margin-bottom:12px; line-height:1.5; color:var(--text); }
+.topts { display:grid; gap:7px; }
+.to {
+  background:var(--bg3); border:1.5px solid var(--border);
+  border-radius:var(--radius-xs); padding:10px 13px;
+  color:var(--text2); font-size:.83rem; font-weight:500;
+  text-align:left; transition:all .2s;
+}
+.to:hover:not(:disabled) { border-color:var(--ac); color:var(--text); background:var(--ac-bg); }
+.to.tc { border-color:var(--green)!important; background:var(--green-bg)!important; color:var(--green)!important; }
+.to.tw { border-color:var(--red)!important; background:var(--red-bg)!important; color:var(--red)!important; }
+.tfb { font-size:.78rem; margin-top:7px; padding:8px 11px; border-radius:7px; display:none; line-height:1.5; }
+.tfb.on { display:block; }
+.tfb.ok { background:var(--green-bg); color:var(--green); }
+.tfb.fail { background:var(--red-bg); color:var(--red); }
+.cmp-btn {
+  width:100%; margin-top:20px;
+  background:linear-gradient(135deg,var(--ac),#7c3aed);
+  color:#fff; padding:14px; border-radius:var(--radius-sm);
+  font-size:.95rem; font-weight:700; display:none;
+  box-shadow:var(--shadow-ac); transition:opacity .15s;
+}
+.cmp-btn.on { display:block; }
+.cmp-btn:active { opacity:.88; }
+
+/* ══════════════════════════════════════════
+   MODALS — BOTTOM SHEET
+══════════════════════════════════════════ */
+.ov {
+  display:none; position:fixed; inset:0;
+  background:rgba(0,0,0,.5); backdrop-filter:blur(4px);
+  z-index:300; align-items:flex-end; justify-content:center; padding:0;
+}
+.ov.on { display:flex; }
+.modal {
+  background:var(--card); border-radius:20px 20px 0 0;
+  width:100%; max-width:480px; max-height:90dvh;
+  overflow-y:auto; animation:slideUp .3s ease;
+}
+.modal::-webkit-scrollbar { width:0; }
+.modal-handle { width:36px; height:4px; background:var(--border2); border-radius:2px; margin:12px auto 0; }
+.m-hd { padding:16px 22px 0; text-align:center; }
+.m-hd .mico { font-size:2.4rem; margin-bottom:8px; }
+.m-hd h2 { font-size:1.3rem; font-weight:800; margin-bottom:4px; color:var(--text); letter-spacing:-.2px; }
+.m-hd p { color:var(--text2); font-size:.84rem; }
+.m-bd { padding:18px 22px 28px; }
+.plan-g { display:grid; gap:9px; margin-bottom:16px; }
+.pl {
+  background:var(--bg3); border:2px solid var(--border);
+  border-radius:var(--radius-sm); padding:13px; cursor:pointer; transition:all .2s; position:relative;
+}
+.pl.sel { border-color:var(--ac); background:var(--ac-bg); }
+.pl.pop::before {
+  content:'Eng foydali'; position:absolute; top:-9px; left:50%; transform:translateX(-50%);
+  background:linear-gradient(135deg,#f59e0b,#ef4444);
+  color:#fff; padding:2px 10px; border-radius:50px; font-size:.63rem; font-weight:700;
+}
+.pl h4 { font-size:.85rem; font-weight:600; margin-bottom:3px; color:var(--text); }
+.pl .pp { font-size:1.2rem; font-weight:800; color:var(--ac); }
+.pl .pp span { font-size:.72rem; font-weight:500; color:var(--text3); }
+.pl .psv { font-size:.68rem; color:var(--green); margin-top:2px; font-weight:600; }
+.fl { list-style:none; margin-bottom:14px; }
+.fl li { display:flex; align-items:center; gap:7px; padding:6px 0; font-size:.83rem; color:var(--text2); border-bottom:1px solid var(--border); }
+.fl li:last-child { border:none; }
+.fi-c { color:var(--green); font-size:1rem; } .fi-l { color:var(--text3); font-size:.85rem; }
+.btn-buy {
+  width:100%; padding:14px; border-radius:var(--radius-sm);
+  background:linear-gradient(135deg,#f59e0b,#ef4444);
+  color:#fff; font-size:.93rem; font-weight:700;
+  margin-bottom:8px; transition:opacity .15s;
+}
+.btn-buy:active { opacity:.88; }
+.btn-lat { width:100%; padding:11px; border-radius:var(--radius-sm); background:transparent; border:1.5px solid var(--border); color:var(--text2); font-size:.84rem; }
+.m-note { text-align:center; font-size:.68rem; color:var(--text3); margin-top:8px; }
+/* Premium success */
+.prem-success { padding:28px 22px 32px; text-align:center; }
+.prem-success .ps-ico { font-size:3rem; margin-bottom:12px; }
+.prem-success h2 { font-size:1.4rem; font-weight:800; color:var(--text); margin-bottom:6px; }
+.prem-success p { color:var(--text2); font-size:.85rem; margin-bottom:22px; line-height:1.6; }
+.prem-success .ps-features { background:var(--ac-bg); border-radius:var(--radius-sm); padding:14px; margin-bottom:20px; text-align:left; }
+.prem-success .ps-features h4 { font-size:.75rem; font-weight:700; color:var(--ac); margin-bottom:10px; }
+.prem-success .ps-item { display:flex; align-items:center; gap:8px; font-size:.83rem; color:var(--text2); margin-bottom:6px; }
+.prem-success .ps-item:last-child { margin-bottom:0; }
+/* Timer */
+.tmr-m { padding:28px 22px 30px; text-align:center; }
+.tmr-m .tmi { font-size:2.5rem; margin-bottom:8px; }
+.tmr-m h2 { font-size:1.2rem; font-weight:800; margin-bottom:5px; color:var(--text); }
+.tmr-m p { color:var(--text2); font-size:.84rem; margin-bottom:14px; line-height:1.5; }
+.tmr-val { font-size:2.2rem; font-weight:800; color:var(--ac); margin-bottom:18px; letter-spacing:2px; }
+.btn-tmr { width:100%; padding:12px; border-radius:var(--radius-sm); background:var(--bg3); color:var(--text2); font-size:.88rem; font-weight:600; border:1px solid var(--border); }
+/* Ad modal */
+.ad-m { padding:24px 22px 28px; text-align:center; }
+.ad-m h2 { font-size:1.2rem; font-weight:800; margin-bottom:5px; color:var(--text); }
+.ad-m p { color:var(--text2); font-size:.84rem; margin-bottom:14px; }
+.ad-box { background:var(--bg3); border:1.5px solid var(--border); border-radius:var(--radius-sm); padding:18px; min-height:80px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; margin-bottom:14px; }
+.ad-box .aico { font-size:2rem; }
+.ad-box span { font-size:.8rem; color:var(--text2); font-weight:500; }
+.ad-prg { width:100%; height:4px; background:var(--border); border-radius:50px; overflow:hidden; margin-top:6px; }
+.ad-prg-f { height:100%; background:var(--ac); border-radius:50px; width:0; transition:width linear; }
+.btn-ad { width:100%; padding:13px; border-radius:var(--radius-sm); background:linear-gradient(135deg,var(--ac),#7c3aed); color:#fff; border:none; font-size:.9rem; font-weight:700; transition:opacity .15s; cursor:not-allowed; opacity:.3; }
+.btn-ad.rdy { opacity:1; cursor:pointer; }
+/* Edit modal */
+.edit-m { padding:20px 22px 30px; }
+.edit-m h2 { font-size:1.2rem; font-weight:800; margin-bottom:18px; color:var(--text); text-align:center; }
+.av-row { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-bottom:22px; }
+.av-opt {
+  width:46px; height:46px; border-radius:50%;
+  background:var(--bg3); border:2px solid transparent;
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.3rem; cursor:pointer; transition:all .2s;
+}
+.av-opt.sel { border-color:var(--ac); background:var(--ac-bg); }
+.btn-save { width:100%; padding:13px; border-radius:var(--radius-sm); background:var(--ac); color:#fff; border:none; font-size:.92rem; font-weight:700; margin-top:8px; transition:opacity .15s; }
+.btn-save:active { opacity:.88; }
+/* Guide modal */
+.guide-wrap { padding:0; }
+.gslide { display:none; padding:28px 22px 20px; text-align:center; }
+.gslide.on { display:block; }
+.gslide .gico { font-size:2.8rem; margin-bottom:12px; }
+.gslide h3 { font-size:1.1rem; font-weight:800; margin-bottom:8px; color:var(--text); }
+.gslide p { color:var(--text2); font-size:.85rem; line-height:1.65; }
+.guide-nav { display:flex; align-items:center; justify-content:space-between; padding:12px 22px 22px; border-top:1px solid var(--border); }
+.g-dots { display:flex; gap:5px; }
+.g-dot { width:6px; height:6px; border-radius:50%; background:var(--border2); transition:background .2s; }
+.g-dot.on { background:var(--ac); }
+.g-prev { color:var(--text3); font-size:.85rem; padding:8px 12px; border-radius:var(--radius-xs); background:none; border:1px solid var(--border); font-weight:500; }
+.g-next { color:#fff; font-size:.85rem; padding:8px 16px; border-radius:var(--radius-xs); background:var(--ac); border:none; font-weight:600; }
+/* Feedback modal */
+.fb-m { padding:22px 22px 28px; }
+.fb-m h2 { font-size:1.1rem; font-weight:800; margin-bottom:14px; color:var(--text); }
+.fb-m textarea {
+  width:100%; background:var(--bg3); border:1.5px solid var(--border);
+  border-radius:var(--radius-sm); padding:12px; font-size:.85rem;
+  color:var(--text); resize:none; height:100px; transition:border-color .2s;
+}
+.fb-m textarea:focus { outline:none; border-color:var(--ac); }
+.btn-fb { width:100%; padding:12px; border-radius:var(--radius-sm); background:var(--ac); color:#fff; border:none; font-size:.9rem; font-weight:700; margin-top:10px; }
+
+@keyframes slideUp { from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)} }
+</style>
+</head>
+<body>
+
+<!-- ═══ LANDING ═══ -->
+<div id="sl" class="screen on">
+  <div class="land-inner">
+    <div class="atom-wrap">
+      <div class="orbit orbit-1"></div>
+      <div class="orbit orbit-2"></div>
+      <div class="orbit orbit-3"></div>
+      <div class="nucleus"></div>
+    </div>
+    <h1 class="land-h1">Fizikani o'rgan.<br><em>AI yo'l ko'rsatadi.</em></h1>
+    <p class="land-sub">AI darajangizni aniqlab, shaxsiy yo'l xaritasi chizadi.</p>
+    <div class="land-feats">
+      <div class="feat">🤖 AI mentor</div>
+      <div class="feat">🗺️ Yo'l xaritasi</div>
+      <div class="feat">🔥 Streak</div>
+    </div>
+    <div class="land-btns">
+      <button class="btn-main" id="btn-start" onclick="goAuth(true)">Bepul boshlash →</button>
+      <button class="btn-sec" id="btn-login" onclick="goAuth(false)">Hisobim bor — Kirish</button>
+      <div class="land-note">Kredit karta shart emas</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ AUTH ═══ -->
+<div id="sa" class="screen">
+  <div class="auth-w">
+    <div class="auth-top">
+      <button class="auth-x" onclick="goTo('sl')">✕</button>
+      <div class="auth-brand">
+        <div class="ab-ic">⚡</div>
+        <span class="ab-nm">FizAI</span>
+      </div>
+    </div>
+    <!-- REGISTER -->
+    <div id="a-reg">
+      <h2 class="auth-h">Ro'yxatdan o'tish</h2>
+      <p class="auth-sub">Yangi hisob oching</p>
+      <div class="ifield">
+        <label>Ismingiz</label>
+        <div class="ifield-input">
+          <input id="r-name" type="text" placeholder="Ismingizni kiriting" autocomplete="name">
+        </div>
+      </div>
+      <div class="ifield">
+        <label>Parol</label>
+        <div class="ifield-input">
+          <input id="r-pass" type="password" placeholder="Parol yarating" autocomplete="new-password">
+        </div>
+      </div>
+      <button class="btn-auth" onclick="doReg()">Ro'yxatdan o'tish ✓</button>
+      <button class="btn-demo" onclick="doDemo()">👤 Demo kirish — sinab ko'rish</button>
+      <div class="auth-sw">Hisobim bor? <a onclick="showF(false)">Kirish →</a></div>
+      <div class="auth-back" onclick="goTo('sl')">← Orqaga</div>
+    </div>
+    <!-- LOGIN -->
+    <div id="a-log" style="display:none">
+      <h2 class="auth-h">Kirish</h2>
+      <p class="auth-sub">Hisobingizga kiring</p>
+      <div id="saved-wrap"></div>
+      <div class="ifield">
+        <label>Ismingiz</label>
+        <div class="ifield-input">
+          <input id="l-name" type="text" placeholder="Ismingiz" autocomplete="username">
+        </div>
+      </div>
+      <div class="ifield">
+        <label>Parol</label>
+        <div class="ifield-input">
+          <input id="l-pass" type="password" placeholder="Parolingiz" autocomplete="current-password">
+        </div>
+      </div>
+      <button class="btn-auth" onclick="doLogin()">Kirish ✓</button>
+      <button class="btn-demo" onclick="doDemo()">👤 Demo kirish</button>
+      <div class="auth-sw">Hisob yo'qmi? <a onclick="showF(true)">Ro'yxatdan o'ting →</a></div>
+      <div class="auth-back" onclick="goTo('sl')">← Orqaga</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ ASSESSMENT ═══ -->
+<div id="sas" class="screen">
+  <div class="as-w">
+    <div class="as-hdr"><h2>Darajangni aniqlaymiz</h2><span class="as-cnt" id="as-ct">1/9</span></div>
+    <div class="prog-wrap"><div class="prog-f" id="prog-f" style="width:0%"></div></div>
+    <div id="q-area"></div>
+  </div>
+</div>
+
+<!-- ═══ RESULT ═══ -->
+<div id="sre" class="screen">
+  <div class="res-card">
+    <div class="res-em" id="r-em">🎯</div>
+    <h2 id="r-ttl">Natija</h2>
+    <div class="res-lvl" id="r-chip"></div>
+    <p class="res-desc" id="r-desc"></p>
+    <div class="time-q">
+      <label>DTMgacha qancha vaqt bor?</label>
+      <div class="time-opts">
+        <button class="topt" onclick="selT(this)">3 oy</button>
+        <button class="topt sel" onclick="selT(this)">6 oy</button>
+        <button class="topt" onclick="selT(this)">1 yil</button>
+        <button class="topt" onclick="selT(this)">Umumiy</button>
+      </div>
+    </div>
+    <div class="road-prev"><h4>AI yo'l xaritasi — preview</h4><div id="r-road"></div></div>
+    <button class="btn-main" onclick="startApp()">Yo'lni boshlaymiz ⚡</button>
+  </div>
+</div>
+
+<!-- ═══ MAIN APP ═══ -->
+<div id="sapp" class="screen">
+  <div class="topbar">
+    <div class="tb-logo"><div class="tb-logo-ic">⚡</div>FizAI</div>
+    <div class="tb-r">
+      <div class="str-chip">🔥 <span id="str-n">0</span></div>
+      <button class="prem-btn" onclick="openPremModal()">⭐ Premium</button>
+    </div>
+  </div>
+  <div class="tabs">
+    <!-- HOME -->
+    <div id="t-hm" class="tc on">
+      <div class="road-hdr">
+        <h3>Yo'l Xaritasi 🗺️</h3>
+        <p>Daraja: <b id="u-lv">—</b> · AI tomonidan tuzilgan</p>
+        <div class="road-stats">
+          <div class="rst"><b id="dn-n">0</b>Bajarildi</div>
+          <div class="rst"><b id="lf-n">30</b>Qolgan</div>
+        </div>
+      </div>
+      <div id="road-list"></div>
+    </div>
+    <!-- STATS -->
+    <div id="t-st" class="tc">
+      <div class="sec-title">Statistika 📊</div>
+      <div class="sg">
+        <div class="sc"><div class="sl">Bajarildi</div><div class="sv sv-blue" id="s-dn">0</div><div class="ss">30 tadan</div></div>
+        <div class="sc"><div class="sl">Streak</div><div class="sv sv-o">🔥<span id="s-str">0</span></div><div class="ss">kun ketma-ket</div></div>
+        <div class="sc"><div class="sl">Daraja</div><div class="sv sv-p" id="s-lv" style="font-size:1rem;font-weight:700">—</div><div class="ss">joriy</div></div>
+        <div class="sc"><div class="sl">AI bugun</div><div class="sv sv-g" id="s-ai">0/10</div><div class="ss">savol</div></div>
+      </div>
+      <div class="ai-tip"><div class="ah">🤖 AI tavsiya</div><p id="s-tip">Birinchi darsni boshlang!</p></div>
+      <div class="chart-box"><h4>Haftalik faollik</h4><div class="bars" id="bars"></div></div>
+      <div class="prem-blk" id="prem-lock">
+        <p>📊 Haftalik hisobot va offline rejim — Premium</p>
+        <button class="btn-main" style="width:auto;padding:10px 20px;font-size:.82rem" onclick="openPremModal()">⭐ Premium olish</button>
+      </div>
+      <div class="wk-card" id="wk-card" style="display:none">
+        <h4>Haftalik hisobot</h4>
+        <div class="wr"><span class="wl">Bajarilgan darslar</span><span class="wv" id="w-dn">0 ta</span></div>
+        <div class="wr"><span class="wl">Streak</span><span class="wv">🔥 <span id="w-str">0</span> kun</span></div>
+        <div class="wr"><span class="wl">AI savollar</span><span class="wv" id="w-ai">0</span></div>
+        <div class="wr"><span class="wl">Daraja</span><span class="wv" id="w-lv">—</span></div>
+      </div>
+    </div>
+    <!-- AI TAB -->
+    <div id="t-ai" class="tc">
+      <div class="sec-title">🤖 FizAI Chat</div>
+      <div class="chips">
+        <div class="chip" onclick="qAI('Kinematika nima? Qisqacha tushuntir')">Kinematika</div>
+        <div class="chip" onclick="qAI('F=ma formulasini misol bilan tushuntir')">F = ma</div>
+        <div class="chip" onclick="qAI('Erkin tushish qonuni nima?')">Erkin tushish</div>
+        <div class="chip" onclick="qAI('DTM fizikasida qaysi mavzular ko\'p chiqadi?')">DTM maslahat</div>
+      </div>
+      <div class="ai-outer">
+        <div class="msgs" id="g-msgs">
+          <div class="msg m-ai"><div class="al">FizAI ⚡</div>Salom! Fizika bo'yicha savol bering 🔬</div>
+        </div>
+        <div class="ai-ftr">
+          <div class="quota-row">
+            <span id="q-txt">Bugun: 0/8 savol</span>
+            <div class="q-dots" id="q-dots"></div>
+          </div>
+          <div class="ai-ir">
+            <textarea class="ai-in" id="g-in" placeholder="Fizikadan savol yozing..." rows="1"
+              onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendG()}"></textarea>
+            <button class="send-b" onclick="sendG()">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+            </button>
+          </div>
+          <button class="ad-btn" id="ad-btn" style="display:none" onclick="openOv('ov-ad')">📺 Reklama ko'rib +2 savol olish</button>
+        </div>
+      </div>
+    </div>
+    <!-- SETTINGS — Disciplino exact style -->
+    <div id="t-set" class="tc">
+      <div class="sec-title">Sozlamalar ⚙️</div>
+      <!-- Profile card -->
+      <div class="set-profile">
+        <div class="set-av" id="s-av">👤</div>
+        <div class="set-pinfo">
+          <h3 id="s-nm">Foydalanuvchi</h3>
+          <p id="s-sub">Fizika o'rganuvchi</p>
+        </div>
+        <div class="plan-badge plan-free" id="s-plan">Bepul</div>
+      </div>
+      <button onclick="openEditModal()" style="display:block;width:100%;padding:12px;border-radius:12px;background:var(--ac-bg);border:1.5px solid var(--ac-bg2);color:var(--ac);font-size:.88rem;font-weight:700;margin-bottom:4px;font-family:Inter,sans-serif;cursor:pointer;">
+        👤 Profilni tahrirlash
+      </button>
+
+      <!-- Language -->
+      <div class="set-st">🌍 Til</div>
+      <div class="si" style="flex-direction:column;align-items:stretch;gap:0;padding:10px 14px">
+        <div class="seg-btns">
+          <div class="seg-btn sel" id="lb-uz" onclick="setLang('uz')">🇺🇿 O'zbek</div>
+          <div class="seg-btn" id="lb-en" onclick="setLang('en')">🇬🇧 English</div>
+          <div class="seg-btn" id="lb-ru" onclick="setLang('ru')">🇷🇺 Русский</div>
+        </div>
+      </div>
+
+      <!-- Theme -->
+      <div class="set-st">🎨 Mavzu</div>
+      <div class="si" style="flex-direction:column;align-items:stretch;gap:0;padding:10px 14px">
+        <div class="seg-btns">
+          <div class="seg-btn" id="th-dark" onclick="setTheme('dark',this)">🌙 Qorong'u</div>
+          <div class="seg-btn sel" id="th-light" onclick="setTheme('light',this)">☀️ Yorug'</div>
+        </div>
+      </div>
+
+      <!-- Notifications -->
+      <div class="set-st">🔔 Bildirishnomalar</div>
+      <div class="si">
+        <div class="si-l"><div class="si-ic">🔔</div><div class="si-tx"><h4>Bildirishnomalar</h4><p>Kunlik eslatma</p></div></div>
+        <div class="tgl on" id="notif-tgl" onclick="this.classList.toggle('on')"></div>
+      </div>
+      <div class="si">
+        <div class="si-l"><div class="si-ic">⏰</div><div class="si-tx"><h4>Eslatma vaqti</h4><p id="notif-time-txt">20:00</p></div></div>
+        <input type="time" value="20:00" id="notif-time" style="background:none;border:none;color:var(--text2);font-size:.82rem;cursor:pointer" onchange="document.getElementById('notif-time-txt').textContent=this.value">
+      </div>
+
+      <!-- Progress sharing -->
+      <div class="set-st">📤 Progress ulashish</div>
+      <div class="si" onclick="shareProgress()">
+        <div class="si-l"><div class="si-ic">📸</div><div class="si-tx"><h4>Story kartasini yaratish / ulashish</h4><p>Natijangizni ulashing</p></div></div>
+        <span class="si-r">›</span>
+      </div>
+
+      <!-- Guide -->
+      <div class="set-st">📖 Qo'llanma</div>
+      <div class="si" onclick="openGuide()">
+        <div class="si-l"><div class="si-ic">🎓</div><div class="si-tx"><h4>Qo'llanmani ko'rish</h4><p>Ilovadan qanday foydalanishni ko'ring</p></div></div>
+        <span class="si-r">›</span>
+      </div>
+
+      <!-- Archive -->
+      <div class="set-st">🏆 Darslar Arxivi</div>
+      <div class="si" onclick="showArchive()">
+        <div class="si-l"><div class="si-ic">📚</div><div class="si-tx"><h4>Tugallangan darslar tarixi</h4><p id="arch-txt">0 ta dars tugatilgan</p></div></div>
+        <span class="si-r">›</span>
+      </div>
+      <div class="si" id="cert-si" style="display:none" onclick="openCert()">
+        <div class="si-l"><div class="si-ic">🎓</div><div class="si-tx"><h4>Sertifikat</h4><p>Kurs tugatilganida</p></div></div>
+        <span class="si-r" style="color:var(--gold)">›</span>
+      </div>
+
+      <!-- Premium -->
+      <div class="set-st">⭐ Premium</div>
+      <div class="si" onclick="openPremModal()">
+        <div class="si-l"><div class="si-ic">⭐</div><div class="si-tx"><h4>Premium olish</h4><p>AI cheksiz · Hisobot · Sertifikat</p></div></div>
+        <span class="si-r" style="color:var(--gold)">›</span>
+      </div>
+
+      <!-- Contact -->
+      <div class="set-st">📬 Biz bilan bog'lanish</div>
+      <div class="si">
+        <div class="si-l"><div class="si-ic">📱</div><div class="si-tx"><h4>Telegram</h4><p>@ShavkatovRustam</p></div></div>
+        <a href="https://t.me/ShavkatovRustam" target="_blank" class="tg-link" onclick="event.stopPropagation()">
+          <svg viewBox="0 0 24 24" fill="currentColor" style="width:16px;height:16px"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.869 4.326-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.83.941z"/></svg>›
+        </a>
+      </div>
+      <div class="si" onclick="openOv('ov-fb')">
+        <div class="si-l"><div class="si-ic">💬</div><div class="si-tx"><h4>Xato / Taklif</h4><p>Fikringizni yuboring</p></div></div>
+        <span class="si-r">›</span>
+      </div>
+
+      <!-- Legal -->
+      <div class="set-st">HUQUQIY</div>
+      <div class="si" onclick="openOv('ov-terms')"><div class="si-l"><div class="si-ic">📄</div><div class="si-tx"><h4>Foydalanuvchi shartnomasi</h4></div></div><span class="si-r">›</span></div>
+      <div class="si" onclick="openOv('ov-privacy')"><div class="si-l"><div class="si-ic">🔒</div><div class="si-tx"><h4>Maxfiylik siyosati</h4></div></div><span class="si-r">›</span></div>
+
+      <div class="si" onclick="logout()" style="margin-top:8px">
+        <div class="si-l"><div class="si-ic">🚪</div><div class="si-tx"><h4 style="color:var(--red)">Chiqish</h4></div></div>
+      </div>
+      <div class="ver-txt">ℹ️ FizAI v2.0 · 2025
+Shavkatov Rustam & Rahmatov Shoxjahon</div>
+    </div>
+  </div>
+  <div class="bnav">
+    <button class="nv on" onclick="switchT('hm',this)" id="nv-hm"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>Darslar</button>
+    <button class="nv" onclick="switchT('st',this)"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>Statistika</button>
+    <button class="nv" onclick="switchT('ai',this)"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>FizAI</button>
+    <button class="nv" onclick="switchT('set',this)"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>Sozlamalar</button>
+  </div>
+</div>
+
+<!-- ═══ LESSON ═══ -->
+<div id="sls" class="screen">
+  <div class="les-nav">
+    <button class="bk-btn" onclick="goTo('sapp')">←</button>
+    <h3 id="les-ttl">Dars</h3>
+  </div>
+  <div class="les-tabs">
+    <button class="ltab on" onclick="switchLT('dr',this)">📖 Dars</button>
+    <button class="ltab" onclick="switchLT('ng',this)">💡 Nega?</button>
+    <button class="ltab" onclick="switchLT('sv',this)">🤖 AI Savol</button>
+    <button class="ltab" onclick="switchLT('ts',this)">✅ Test</button>
+  </div>
+  <div class="ls on" id="ls-dr">
+    <div class="l-vis"><div class="fml-wrap"><div class="fml-txt" id="l-fml">—</div><div class="fml-sub" id="l-fmls"></div></div></div>
+    <div id="l-content"></div>
+  </div>
+  <div class="ls" id="ls-ng"><div id="w-content"></div></div>
+  <div class="ls" id="ls-sv" style="padding:0">
+    <div class="les-chat" style="padding:14px 16px 0">
+      <div class="les-msgs" id="les-msgs">
+        <div class="msg m-ai"><div class="al">FizAI ⚡</div>Bu dars bo'yicha savol bering 🔬</div>
+      </div>
+      <div class="les-ftr">
+        <textarea class="ai-in" id="les-in" placeholder="Savol yozing..." rows="1"
+          onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendL()}"></textarea>
+        <button class="send-b" onclick="sendL()">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="ls" id="ls-ts">
+    <div id="test-area"></div>
+    <button class="cmp-btn" id="cmp-btn" onclick="completeLesson()">✅ Darsni tugatish →</button>
+  </div>
+</div>
+
+<!-- PREMIUM MODAL -->
+<div class="ov" id="ov-prem">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div id="prem-plans-view">
+      <div class="m-hd"><div class="mico">👑</div><h2>FizAI Premium</h2><p>Cheksiz imkoniyatlar bilan maqsadingizga tering</p></div>
+      <div class="m-bd">
+        <div class="plan-g">
+          <div class="pl" onclick="selPlan(this,'monthly')"><h4>Oylik</h4><div class="pp">39 900 <span>so'm/oy</span></div></div>
+          <div class="pl pop sel" onclick="selPlan(this,'yearly')"><h4>Yillik</h4><div class="pp">199 000 <span>so'm/yil</span></div><div class="psv">✓ 58% tejash — 16 600 so'm/oy</div></div>
+          <div class="pl" onclick="selPlan(this,'lifetime')"><h4>Umrlik</h4><div class="pp">499 000 <span>so'm</span></div><div class="psv">✓ Eng foydali uzoq muddatda</div></div>
+        </div>
+        <ul class="fl">
+          <li><span class="fi-c">✓</span> Barcha 30 mavzu (bepulda ham ochiq)</li>
+          <li><span class="fi-c">✓</span> FizAI chat — cheksiz savol</li>
+          <li><span class="fi-c">✓</span> Haftalik hisobot</li>
+          <li><span class="fi-c">✓</span> Offline rejim</li>
+          <li><span class="fi-c">✓</span> Kurs sertifikati</li>
+          <li><span class="fi-l">🔒</span><span style="color:var(--text3)">Bepulda: 10 AI savol/kun, sertifikatsiz</span></li>
+        </ul>
+        <button class="btn-buy" onclick="buyPrem()">⭐ Premium rasmiylashtirish (test) →</button>
+        <button class="btn-lat" onclick="closeOv('ov-prem')">Keyinroq</button>
+        <div class="m-note">Test rejimi · Haqiqiy to'lov tez orada</div>
+      </div>
+    </div>
+    <div id="prem-success-view" style="display:none">
+      <div class="modal-handle"></div>
+      <div class="prem-success">
+        <div class="ps-ico">🎉</div>
+        <h2>Premium rasmiylashtirildi!</h2>
+        <p>Tabriklaymiz! Siz FizAI Premium foydalanuvchisiga aylandingiz. Barcha imkoniyatlar faollashtirildi.</p>
+        <div class="ps-features">
+          <h4>Faollashtirilgan imkoniyatlar:</h4>
+          <div class="ps-item">✅ FizAI chat — cheksiz savol</div>
+          <div class="ps-item">✅ Haftalik hisobot</div>
+          <div class="ps-item">✅ Offline rejim</div>
+          <div class="ps-item">✅ Kurs sertifikati</div>
+        </div>
+        <button class="btn-main" onclick="closeOv('ov-prem')">Davom etish →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TIMER MODAL -->
+<div class="ov" id="ov-tmr">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="tmr-m">
+      <div class="tmi">⏰</div>
+      <h2>Dars qulflangan</h2>
+      <p>Har darsdan keyin 15 soat kutish kerak. Bu o'rgangan narsangizni mustahkamlash uchun muhim.</p>
+      <div class="tmr-val" id="tmr-val">15:00:00</div>
+      <button class="btn-tmr" onclick="closeOv('ov-tmr')">Tushunarli</button>
+    </div>
+  </div>
+</div>
+
+<!-- AD MODAL -->
+<div class="ov" id="ov-ad">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="ad-m">
+      <h2>+2 savol olish</h2>
+      <p>Reklama ko'rib qo'shimcha 2 ta savol oling</p>
+      <div class="ad-box">
+        <div class="aico">📺</div>
+        <span id="ad-txt">Reklama ko'rilmoqda...</span>
+        <div class="ad-prg"><div class="ad-prg-f" id="ad-pf"></div></div>
+      </div>
+      <button class="btn-ad" id="btn-ad" onclick="getExtra()">2 ta savol olish ✓</button>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT PROFILE MODAL -->
+<div class="ov" id="ov-edit">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="edit-m">
+      <h2>Akkauntni tahrirlash</h2>
+      <!-- Avatar picker -->
+      <div style="font-size:.72rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;">Profil rasmi tanlang</div>
+      <div class="av-row" id="av-row"></div>
+      <div class="ifield">
+        <label>Ism</label>
+        <div class="ifield-input">
+          <input id="edit-name" type="text" autocomplete="off">
+        </div>
+      </div>
+      <div class="ifield">
+        <label>Yangi parol <span style="color:var(--text3);font-weight:400;text-transform:none">(o'zgartirmaslik uchun bo'sh qoldiring)</span></label>
+        <div class="ifield-input">
+          <input id="edit-pass" type="password" placeholder="Yangi parol..." autocomplete="new-password">
+          <button class="eye-btn" onclick="toggleEye('edit-pass','eye-ep')" id="eye-ep">👁️</button>
+        </div>
+      </div>
+      <button class="btn-save" onclick="saveEdit()">Saqlash ✓</button>
+      <button class="btn-lat" style="margin-top:8px" onclick="closeOv('ov-edit')">Bekor qilish</button>
+    </div>
+  </div>
+</div>
+
+<!-- GUIDE MODAL -->
+<div class="ov" id="ov-guide">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="guide-wrap">
+      <div class="gslide on" id="gs-1"><div class="gico">⚡</div><h3>FizAI ga xush kelibsiz!</h3><p>Fizikani noldan o'rganishingizga yordam beradigan AI ilovasi. 30 mavzu, animatsiyali darslar va shaxsiy yo'l xaritasi.</p></div>
+      <div class="gslide" id="gs-2"><div class="gico">📊</div><h3>Darajangni aniqla</h3><p>9 ta savol orqali sizning darjangiz aniqlanadi. AI shunga qarab yo'l xaritasi tuzadi va sizga mos boshlang'ich mavzuni belgilaydi.</p></div>
+      <div class="gslide" id="gs-3"><div class="gico">⏰</div><h3>15 soat qoidasi</h3><p>Har dars tugatganingizdan keyin keyingi dars 15 soat qulflanadi. Bu bilimni mustahkamlash uchun ilmiy asoslangan metod.</p></div>
+      <div class="gslide" id="gs-4"><div class="gico">🤖</div><h3>FizAI Chat</h3><p>Kuniga 8 ta savol bepul. Reklama ko'rib +2 ta qo'shishingiz mumkin. Premium — cheksiz savol.</p></div>
+      <div class="gslide" id="gs-5"><div class="gico">🔥</div><h3>Streak tizimi</h3><p>Har kuni dars tugatib streak saqlab boring! Streak — o'qish odatini shakllantiruvchi eng kuchli mexanizm.</p></div>
+      <div class="guide-nav">
+        <div class="g-dots" id="g-dots"></div>
+        <div style="display:flex;gap:8px">
+          <button class="g-prev" id="gp-prev" onclick="guideNav(-1)">← Orqaga</button>
+          <button class="g-next" id="gp-next" onclick="guideNav(1)">Keyingi →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FEEDBACK MODAL -->
+<div class="ov" id="ov-fb">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="fb-m">
+      <h2>💬 Xato / Taklif</h2>
+      <textarea id="fb-txt" placeholder="Fikringizni yozing..."></textarea>
+      <button class="btn-fb" onclick="sendFb()">Yuborish ✓</button>
+      <button class="btn-lat" style="margin-top:8px" onclick="closeOv('ov-fb')">Bekor qilish</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════
+// ASSESSMENT QUESTIONS (from PDF)
+// ══════════════════════════════════════════
+const QS=[
+  {t:"Birliklar: SI sistemasida masofa (metr), vaqt (soniya) va massa (kg) qabul qilingan. Quyidagilardan qaysi biri tezlik birligi bo'ladi?",o:["A) kg · m","B) m/s","C) s/m"],a:1,lv:'easy'},
+  {t:"Kinematika: Mashina 2 soat davomida 120 km yo'l yurdi. Uning o'rtacha tezligini toping.",o:["A) 60 km/h","B) 240 km/h","C) 50 km/h"],a:0,lv:'easy'},
+  {t:"Dinamika: Jismga ta'sir qilayotgan barcha kuchlar yig'indisi nolga teng bo'lsa, jism...",o:["A) Faqat tinch turadi.","B) Yo tinch turadi, yo tekis to'g'ri chiziqli harakat qiladi.","C) Har doim tezlanish bilan harakat qiladi."],a:1,lv:'easy'},
+  {t:"Nyuton qonuni: Massasi 2 kg bo'lgan jismga 10 N kuch ta'sir etsa, uning tezlanishi qancha bo'ladi?",o:["A) 20 m/s²","B) 5 m/s²","C) 0.2 m/s²"],a:1,lv:'mid'},
+  {t:"Energiya: Jism yer sirtidan 10 metr balandlikka ko'tarildi. Uning qaysi energiyasi ortdi?",o:["A) Kinetik energiya","B) Potensial energiya","C) Ichki energiya"],a:1,lv:'mid'},
+  {t:"Kuchlar: Muz ustida sirpanayotgan shaybaning to'xtashiga asosiy sabab nima?",o:["A) Og'irlik kuchi","B) Ishqalanish kuchi","C) Inertsiya"],a:1,lv:'mid'},
+  {t:"Impuls: Massasi 1 kg va tezligi 5 m/s bo'lgan to'pning impulsi qanchaga teng? (p = mv)",o:["A) 5 kg·m/s","B) 0.2 kg·m/s","C) 10 kg·m/s"],a:0,lv:'hard'},
+  {t:"Issiqlik: 1 kg suvni 1 gradusga isitish uchun ketadigan issiqlik miqdori nima deyiladi?",o:["A) Solishtirma yonish issiqligi","B) Solishtirma issiqlik sig'imi","C) Solishtirma erish issiqligi"],a:1,lv:'hard'},
+  {t:"Termodinamika: Gaz kengayganda 100 J ish bajardi va unga 300 J issiqlik berildi. Gazning ichki energiyasi qanchaga o'zgardi?",o:["A) 400 J ga ortdi","B) 200 J ga ortdi","C) 200 J ga kamaydi"],a:1,lv:'hard'}
+];
+const QSC={easy:1,mid:1.5,hard:2};
+function getStartInfo(sc){
+  if(sc<=2)return{st:1,lv:'Yangi boshlovchi',em:'🌱',ttl:'Noldan boshlaylik!',desc:'Fizika dunyosiga xush kelibsiz! AI yo\'l xaritangiz eng asoslardan boshlanadi.'};
+  if(sc<=5)return{st:4,lv:'Bilimdon',em:'🎯',ttl:'Yaxshi boshlanish!',desc:'Asoslar mavjud. Dinamika mavzusidan boshlaysiz.'};
+  if(sc<=7)return{st:7,lv:'Tajribali',em:'⚡',ttl:'Kuchli natija!',desc:'Energiya va impuls mavzularidan davom etasiz.'};
+  return{st:10,lv:'Bilimi yuqori',em:'🏆',ttl:'Zo\'r natija!',desc:'Molekulyar fizika va issiqlikdan davom etasiz.'};
+}
+
+// ══════════════════════════════════════════
+// RICH TOPICS DATA — 30 mavzu
+// ══════════════════════════════════════════
+const T=[
+  {id:1,blk:'I Blok: Kinematika (Harakatni tasvirlash)',
+   t:'Kirish: Fizika nima?',sub:'SI birliklar sistemasi va o\'lchovlar',tm:8,
+   fml:'SI',fmls:'m · kg · s — asosiy birliklar',
+   content:`<h3 class="l-h3">Fizika — tabiatning tili</h3>
+<p class="l-p">Fizika — bu borliqni tushunish ilmi. Nega toshlar yerga tushadi? Nega samolyot uchadi? Nega telefon ishlaydi? Bu savollarga javob fizikada. Fizika barcha muhandislik, tibbiyot va texnologiyaning poydevori.</p>
+<div class="cpt"><h4>SI sistemasi</h4><p>Dunyo bo'ylab birliklarni standartlash uchun SI (Système International) tizimi qabul qilingan. Bu tizimda barcha fizik miqdorlar 7 ta asosiy birlik orqali ifodalanadi.</p></div>
+<div class="formula-box"><span class="f-eq">m, kg, s</span><div class="f-desc">Masofa (metr), Massa (kilogramm), Vaqt (soniya) — eng ko'p ishlatiladigan asosiy birliklar</div></div>
+<p class="l-p">Hosilaviy birliklar asosiy birliklardan hosil qilinadi: tezlik — m/s, kuch — N = kg·m/s², energiya — J = kg·m²/s².</p>
+<div class="formula-box"><span class="f-eq">v = m/s</span><div class="f-desc">Tezlik = Masofa ÷ Vaqt. Metr sekundiga (m/s) — SI da asosiy tezlik birligi</div></div>
+<div class="did-you-know"><h4>💡 Bilasizmi?</h4><p>1 N kuch (Nyuton) — taxminan 100 gramm olma og'irligiga teng. Shu sababli bu birlik Isaac Newton sharafiga nomlangan.</p></div>`,
+   why_content:`<div class="why-hero"><h4>🌍 Hayotda nima uchun kerak?</h4><p>Fizika bilmasdan birorta ham muhandislik qurilmasi, tibbiy asbob yoki texnologik mahsulot yaratib bo'lmaydi. Fizika — barcha fanlarning asosi.</p></div>
+<div class="why-example"><div class="we-hdr"><div class="we-ico">🚀</div><div class="we-ttl">Kosmik texnologiya</div></div><div class="we-body">Raketa uchirish uchun har bir bolt, har bir yoqilg'i miqdori fizika formulalari bilan hisoblanadi. Yanlish hisob — falokat. <span class="we-highlight">NASA</span> muhandislari har kuni SI birliklarini ishlatadi.</div></div>
+<div class="why-example"><div class="we-hdr"><div class="we-ico">🏥</div><div class="we-ttl">Tibbiyot</div></div><div class="we-body">MRI apparati, rentgen, EKG — barchasi fizika qonunlariga asoslanadi. Shifokorlar kasallikni aniqlash uchun fizik prinsiplardan foydalanadi. <span class="we-highlight">MRI</span> magnit maydoni va radio to'lqinlardan foydalanadi.</div></div>
+<div class="why-example"><div class="we-hdr"><div class="we-ico">📱</div><div class="we-ttl">Smartfon</div></div><div class="we-body">Siz ushlab turgan telefon ichida 30+ fizik prinsip ishlaydi: elektr toki, elektromagnit to'lqinlar, yorug'lik, akselerometr. <span class="we-highlight">Hamma narsa fizika.</span></div></div>`,
+   ts:[{q:'SI da tezlik birligi?',o:['kg·m','m/s','s/m','N'],a:1,f:'m/s — metr soniyada. v = s/t formulasidan hosil bo\'linadi.'},{q:'Massa qaysi birlikda o\'lchanadi?',o:['Metr','Nyuton','Kilogramm','Joul'],a:2,f:'kg — kilogramm, massa birligi.'},{q:'Energiya birligi nimа?',o:['Vatt','Joul','Nyuton','Pascal'],a:1,f:'J — Joul. 1 J = 1 N × 1 m.'},{q:'Kuch birligi?',o:['Joul','Vatt','Nyuton','Amper'],a:2,f:'N — Nyuton. F = ma dan: N = kg × m/s².'},{q:'Bosim birligi?',o:['Joul','Nyuton','Hertz','Pascal'],a:3,f:'Pa — Pascal. P = F/S.'}]},
+
+  {id:2,blk:null,t:'Tekis harakat',sub:'Yo\'l, ko\'chish, tezlik (v = s/t)',tm:10,
+   fml:'v = s / t',fmls:'Tezlik = Masofa ÷ Vaqt',
+   content:`<h3 class="l-h3">Tekis chiziqli harakat</h3>
+<p class="l-p">Tekis harakat — jism bir tekis, ya'ni tezligini o'zgartirmay, to'g'ri chiziq bo'ylab harakatlanishi. Bu harakatning eng sodda turi bo'lib, tezlik doimiy bo'ladi.</p>
+<div class="formula-box"><span class="f-eq">v = s/t</span><div class="f-desc">Tezlik (v) = Masofa (s) ÷ Vaqt (t). Birlik: m/s yoki km/h</div></div>
+<div class="cpt"><h4>Asosiy tushunchalar</h4><p><b>Yo'l (s)</b> — jism bosib o'tgan umumiy masofa. Birlik: metr (m).<br><b>Tezlik (v)</b> — birlik vaqtda bosib o'tilgan masofa. Skalyar miqdor.<br><b>Vaqt (t)</b> — harakatning davom etgan muddati. Birlik: soniya (s).</p></div>
+<p class="l-p">Misol: Mashina 120 km ni 2 soatda bosib o'tdi. <br>v = s/t = 120 km / 2 soat = <b>60 km/h</b></p>
+<div class="formula-box"><span class="f-eq">s = v × t</span><div class="f-desc">Masofa = Tezlik × Vaqt. 60 km/h da 3 soatda: s = 60 × 3 = 180 km</div></div>
+<div class="did-you-know"><h4>💡 Bilasizmi?</h4><p>Yorug'lik tezligi vakuumda c = 3×10⁸ m/s — bu fizikadagi eng katta tezlik. Quyoshdan Yerga yorug'lik 8 daqiqada etib keladi.</p></div>`,
+   why_content:`<div class="why-hero"><h4>🌍 Nima uchun tekis harakat muhim?</h4><p>Tekis harakat haqiqiy hayotda ko'p uchraydi. Tezlik, yo'l, vaqt orasidagi bog'liqlikni tushunmasdan transport, aviatsiya va sport bilan shug'ullanib bo'lmaydi.</p></div>
+<div class="why-example"><div class="we-hdr"><div class="we-ico">🚗</div><div class="we-ttl">Yo'l harakati xavfsizligi</div></div><div class="we-body">Avtohaydovchi magistralda 90 km/h da ketayapti. Tormoz bosishdan to to'xtagunicha qancha masofa kerak? Bu hisob v = s/t formulasi bilan aniqlanadi. <span class="we-highlight">Hayot uchun muhim!</span></div></div>
+<div class="why-example"><div class="we-hdr"><div class="we-ico">✈️</div><div class="we-ttl">Aviatsiya</div></div><div class="we-body">Samolyot 850 km/h tezlikda uchadi. Toshkentdan Moskvaga 3000 km. Parvoz vaqti: t = s/v = 3000/850 ≈ <span class="we-highlight">3.5 soat.</span> Pilot shu formulani doim ishlatadi.</div></div>
+<div class="why-example"><div class="we-hdr"><div class="we-ico">🏃</div><div class="we-ttl">Sport</div></div><div class="we-body">Usain Bolt 100 meterni 9.58 sekundda yugurdi. O'rtacha tezligi: v = 100/9.58 = <span class="we-highlight">10.44 m/s</span> ≈ 37.6 km/h. Sport g'olibini tezlik aniqlaydi.</div></div>`,
+   ts:[{q:'Mashina 2 soatda 120 km. Tezligi?',o:['50 km/h','60 km/h','70 km/h','80 km/h'],a:1,f:'v = s/t = 120/2 = 60 km/h'},{q:'5 m/s da 10 sek. Masofa?',o:['2 m','15 m','50 m','100 m'],a:2,f:'s = v×t = 5×10 = 50 m'},{q:'Tezlik qaysi miqdor?',o:['Vektor','Skalyar','Ikkalasi','Hech biri'],a:1,f:'Tezlik (speed) — skalyar, faqat soni bor'},{q:'Tekis harakatda tezlik qanday?',o:['O\'zgaradi','Doimiy (o\'zgarmas)','Ortadi','Kamayadi'],a:1,f:'Tekis harakatda tezlik doimiy'},{q:'Agar s=150 m, t=30 s, v=?',o:['4500 m/s','5 m/s','0.2 m/s','120 m/s'],a:1,f:'v = s/t = 150/30 = 5 m/s'}]},
+
+  {id:3,blk:null,t:'Tezlanuvchan harakat',sub:'Tezlanish tushunchasi (a=Δv/t) va erkin tushish (g=9.8)',tm:12,
+   fml:'a = Δv / t',fmls:'Tezlanish = Tezlik o\'zgarishi ÷ Vaqt',
+   content:`<h3 class="l-h3">Tezlanish nima?</h3>
+<p class="l-p">Tezlanish — tezlikning vaqt birligi ichida o'zgarishi. Agar jism tezroq ketsa — musbat tezlanish, sekinlashsa — manfiy tezlanish (sekinlanish).</p>
+<div class="formula-box"><span class="f-eq">a = Δv/t</span><div class="f-desc">a — tezlanish (m/s²), Δv = v_oxir − v_boshlanish, t — vaqt</div></div>
+<div class="cpt"><h4>Erkin tushish</h4><p>Yer yuzasida barcha jismlar bir xil tezlanish bilan tushadi (havo qarshiligi hisobga olinmasa). Bu tezlanish g = 9.8 m/s² ≈ 10 m/s² deb hisoblanadi. Bu Galiley kashf etgan buyuk qonun.</p></div>
+<div class="formula-box"><span class="f-eq">h = gt²/2</span><div class="f-desc">Erkin tushishda balandlik. g = 9.8 m/s², t — tushish vaqti</div></div>
+<p class="l-p">Misol: Mashina 0 dan 20 m/s ga 4 sekundda yetdi. <br>a = Δv/t = (20-0)/4 = <b>5 m/s²</b></p>
+<div class="did-you-know"><h4>💡 Bilasizmi?</h4><p>Oyda g = 1.6 m/s² — Yerdan 6 marta kichik. Shu sababli oyda sakrash Yerdan 6 marta balandroq. Astronomlar 1971 yilda Oyda bir pat va bolg'ani bir vaqtda tashlab, ularning bir vaqtda tushishini isbotladi.</p></div>`,
+   why_content:`<div class="why-hero"><h4>🌍 Tezlanishni qachon ishlatamiz?</h4><p>Tezlanish tushunchasi transport, aviatsiya, qurollar, kosmik texnologiya va sport fizikasining asosi. Har qanday harakatlanuvchi transport vositasining xavfsizligi tezlanish hisobi bilan belgilanadi.</p></div>
+<div class="why-example"><div class="we-hdr"><div class="we-ico">🚀</div><div class="we-ttl">Raketa uchirish</div></div><div class="we-body">Birinchi kosmik tezlikka (7.9 km/s) yetish uchun raketa dvigateli katta tezlanish berishi kerak. Astronavtlar uchirish vaqtida 3g (29.4 m/s²) tezlanishni his qiladi — <span class="we-highlight">o'z og'irliklaridan 3 marta og'irroq!</span></div></div>
+<div class="why-example"><div class="we-hdr"><div class="we-ico">🏎️</div><div class="we-ttl">Formula 1</div></div><div class="we-body">F1 mashinasi 0 dan 100 km/h ga 2.5 sekundda yetadi. a = Δv/t = 27.8/2.5 = <span class="we-highlight">11.1 m/s²</span> ≈ 1.13g. Haydovchi o'tirgan joyida og'irligini his qiladi!</div></div>
+<div class="why-example"><div class="we-hdr"><div class="we-ico">🏗️</div><div class="we-ttl">Qurilish xavfsizligi</div></div><div class="we-body">Yuqoridan tushgan buyum qancha vaqtda yerga yetadi? g = 10, balandlik 45 m: h = gt²/2 → t = √(2h/g) = √9 = <span class="we-highlight">3 soniya.</span> Qurilishchilar shu hisob bilan xavfsizlik chegarasini belgilaydi.</div></div>`,
+   ts:[{q:'Tezlanish formulasi?',o:['a=v·t','a=Δv/t','a=F/v','a=s/t²'],a:1,f:'a = Δv/t — tezlik o\'zgarishini vaqtga bo\'lish'},{q:'0 dan 30 m/s ga 5 sek. a=?',o:['150 m/s²','6 m/s²','0.17 m/s²','5 m/s²'],a:1,f:'a = 30/5 = 6 m/s²'},{q:'g yerda taxminan?',o:['8.9 m/s²','10.8 m/s²','9.8 m/s²','11.2 m/s²'],a:2,f:'g ≈ 9.8 m/s² — standart qiymat'},{q:'Erkin tushishda h = ? (g=10, t=3)',o:['30 m','45 m','90 m','15 m'],a:1,f:'h = gt²/2 = 10×9/2 = 45 m'},{q:'Og\'ir va yengil to\'p bir vaqtda tushadi?',o:['Ha, bir vaqtda','Og\'ir avval tushadi','Yengil avval tushadi','Har xil vaqtda'],a:0,f:'Ha! Galiley: tezlanish massaga bog\'liq emas — g barcha uchun bir xil'}]},
+
+  {id:4,blk:'II Blok: Dinamika (Harakat sabablari)',t:'Nyuton qonunlari',sub:'Inertsiya, F=ma va ta\'sir-aks ta\'sir',tm:14,
+   fml:'F = m × a',fmls:'Kuch = Massa × Tezlanish',
+   content:`<h3 class="l-h3">Nyutonning uch qonuni</h3>
+<p class="l-p">Isaac Newton 1687 yilda "Principia Mathematica" asarida uch qonunni e'lon qildi. Bu qonunlar 300 yil davomida klassik mexanikaning poydevori bo'lib kelmoqda.</p>
+<div class="cpt"><h4>1-qonun: Inertsiya prinsipi</h4><p>Agar jismga tashqi kuch ta'sir etmasa yoki kuchlar muvozanatda bo'lsa, jism tinchlikda yoki tekis to'g'ri chiziqli harakatda bo'laveradi. <b>Kuch bo'lmasa — holat o'zgarmaydi.</b></p></div>
+<div class="formula-box"><span class="f-eq">F = ma</span><div class="f-desc">2-qonun: Kuch (N) = Massa (kg) × Tezlanish (m/s²). 2 kg jismga 10 N → a = 5 m/s²</div></div>
+<div class="cpt"><h4>3-qonun: Ta'sir va aks ta'sir</h4><p>Har qanday ta'sirga teng va qarama-qarshi aks ta'sir mavjud. Raketa gaz chiqaradi (ta'sir) → gaz raketa ga aks ta'sir qilib uni turtadi.</p></div>
+<div class="did-you-know"><h4>💡 Bilasizmi?</h4><p>Inertsiya tufayli kamar taqmasdan keskin tormoz bossangiz, tezlik 100 km/h dan 0 ga 0.1 sek da tushganda odam 280 kg kuchli zarba oladi — devorbilan to'qnashgan kabi!</p></div>`,
+   why_content:`<div class="why-hero"><h4>🌍 Nyuton qonunlari hamma yerda</h4><p>Nyuton qonunlari kundalik hayotimizning har bir joyida ishlaydi — mashinadan tortib kosmik kemaga qadar. Bu qonunlarni tushunmasdan zamonaviy texnologiyani yaratib bo'lmaydi.</p></div>
+<div class="why-example"><div class="we-hdr"><div class="we-ico">🚗</div><div class="we-ttl">Kamar — hayotni saqlovchi</div></div><div class="we-body">Mashina keskin tormoz bosdi. <b>1-qonun (inertsiya):</b> yo'lovchi oldinga qarab harakatlana boshlaydi. Kamar taqilmasa — odam oldinga uchadi. Kamar shu inertsiyadan himoya qiladi. <span class="we-highlight">Kamar = Nyuton 1-qonuni + xavfsizlik.</span></div></div>
+<div class="why-example"><div class="we-hdr"><div class="we-ico">🚀</div><div class="we-ttl">Raketa harakati</div></div><div class="we-body"><b>3-qonun (aks ta'sir):</b> Raketa pastga kuchli gaz chiqaradi. Gaz raketa ga teskari kuch ta'sir qiladi — raketa yuqoriga ko'tariladi. <span class="we-highlight">F_ta'sir = F_aks ta'sir.</span> Kosmosda boshqacha harakat usuli yo'q!</div></div>
+<div class="why-example"><div class="we-hdr"><div class="we-ico">⚽</div><div class="we-ttl">Futbol zarba</div></div><div class="we-body"><b>2-qonun (F=ma):</b> 0.45 kg to'pni 200 N kuch bilan tepilsa: a = F/m = 200/0.45 = <span class="we-highlight">444 m/s²!</span> To'p darvozaga 1 sekundda yetib boradi. Kuchliroq zarba = katta tezlanish = tezroq to'p.</div></div>`,
+   ts:[{q:'2 kg jismga 10 N kuch ta\'sir etsa, a=?',o:['20 m/s²','5 m/s²','0.2 m/s²','12 m/s²'],a:1,f:'a = F/m = 10/2 = 5 m/s²'},{q:'Nyuton 1-qonuni qaysi tushuncha haqida?',o:['Kuch','Inertsiya','Energiya','Impuls'],a:1,f:'1-qonun — inertsiya prinsipi'},{q:'F=ma da kuch birligi?',o:['Kilogramm','Joul','Nyuton','Vatt'],a:2,f:'N — Nyuton = kg × m/s²'},{q:'Raketa 3-qonun bo\'yicha harakat qiladi?',o:['Ha','Yo\'q','Ba\'zan','Faqat kosmosda'],a:0,f:'Ha! Gaz pastga → raketa yuqoriga (3-qonun)'},{q:'Kamar nima uchun taqiladi?',o:['Qulaylik uchun','Inertsiyadan himoya','Tezlashish','Ko\'rinish uchun'],a:1,f:'Inertsiya: tormozda oldinga uchishdan himoya'}]},
+
+  {id:5,blk:null,t:'Tabiatdagi kuchlar',sub:'Og\'irlik (P=mg), ishqalanish, elastiklik (Guk)',tm:12,
+   fml:'P = m × g',fmls:'Og\'irlik kuchi = Massa × g (g=9.8 m/s²)',
+   content:`<h3 class="l-h3">Tabiatdagi asosiy kuchlar</h3>
+<p class="l-p">Tabiatda 4 ta fundamental kuch mavjud: gravitatsiya, elektromagnit, kuchli va kuchsiz yadro kuchlari. Kundalik hayotda biz asosan gravitatsiya va elektromagnit kuchlarni sezamiz.</p>
+<div class="formula-box"><span class="f-eq">P = mg</span><div class="f-desc">Og'irlik kuchi. m — massa (kg), g = 9.8 m/s². 60 kg odam: P = 60 × 9.8 = 588 N ≈ 600 N</div></div>
+<div class="cpt"><h4>Ishqalanish kuchi</h4><p>Ishqalanish kuchi F_ish = μ × N formulasi bilan hisoblanadi. μ (mu) — ishqalanish koeffitsienti. Muz uchun μ ≈ 0.03, rezina uchun μ ≈ 0.8. Kattaroq μ = kuchliroq ishqalanish.</p></div>
+<div class="formula-box"><span class="f-eq">F = k × x</span><div class="f-desc">Guk qonuni (elastiklik kuchi). k — prujina qattiqligi (N/m), x — uzayish (m)</div></div>
+<div class="did-you-know"><h4>💡 Bilasizmi?</h4><p>Agar Yerda atmosfera bo'lmaganida, pat va bolg'a bir vaqtda tushgan bo'lardi (g barcha uchun bir xil). Bu Oyda sinov o'tkazilgan va isbotlangan!</p></div>`,
+   why_content:`<div class="why-hero"><h4>🌍 Kuchlar qayerda ishlaydi?</h4><p>Har qadam tashlashingizda, har narsani ko'tarishingizda, har yurganda — fizik kuchlar ta'sirida bo'lasiz. Bu kuchlarni bilmasdan qurilish va muhandislik sohasida ishlab bo'lmaydi.</p></div>
+<div class="why-example"><div class="we-hdr"><div class="we-ico">🏗️</div><div class="we-ttl">Qurilish muhandisligi</div></div><div class="we-body">Ko'prikga 100 tonna mashina kiradi. Muhandis P = mg = 100000 × 9.8 = <span class="we-highlight">980 000 N</span> og'irlikni hisoblaydi va shunga mos poydevor loyihalaydi. Noto'g'ri hisob — halokat.</div></div>
+<div class="why-example"><div class="we-hdr"><div class="we-ico">⛷️</div><div class="we-ttl">Sport va ishqalanish</div></div><div class="we-body">Chang'ichi muz ustida uchadi — chunki muz-chang'i μ ≈ 0.03 (juda kam ishqalanish). Avtomobil tormoz uchun rezina μ ≈ 0.7 kerak. <span class="we-highlight">To'g'ri material = xavfsiz harakatlanish.</span></div></div>
+<div class="why-example"><div class="we-hdr"><div class="we-ico">🪆</div><div class="we-ttl">Prujina va Guk qonuni</div></div><div class="we-body">Avtomobil amortizatori, matras, tarozi — barchasi Guk qonuniga asoslanadi. Prujina k = 1000 N/m, 5 sm siqilsa: F = k×x = 1000 × 0.05 = <span class="we-highlight">50 N.</span></div></div>`,
+   ts:[{q:'60 kg odam og\'irligi? (g=10)',o:['6 N','600 N','60 N','6000 N'],a:1,f:'P = mg = 60 × 10 = 600 N'},{q:'Guk qonuni formulasi?',o:['F=ma','F=kx','F=mv','P=mg'],a:1,f:'F = k × x — elastiklik kuchi'},{q:'Muz ustida ishqalanish koeffitsienti?',o:['Juda katta','Kichik (≈0.03)','Nol','O\'rtacha'],a:1,f:'Muz: μ ≈ 0.03 — juda kichik, shuning uchun sirpanadi'},{q:'Og\'irlik va massa bir xilmi?',o:['Ha, bir xil','Yo\'q, og\'irlik kuch, massa moddiy miqdor','Ba\'zan','Kosmosda bir xil'],a:1,f:'Og\'irlik kuch (N), massa moddiy miqdor (kg)'},{q:'Ishqalanish kuchini oshirish uchun?',o:['Yog\' surish','Sirt qo\'polligini oshirish','Tezlikni oshirish','Massani kamaytirish'],a:1,f:'Qo\'pol sirt → μ katta → F_ish katta'}]},
+
+  {id:6,blk:null,t:'Statika',sub:'Jismlarning muvozanat shartlari ΣF=0',tm:10,
+   fml:'ΣF = 0',fmls:'Kuchlar yig\'indisi nol = Muvozanat',
+   content:`<h3 class="l-h3">Statika va muvozanat</h3>
+<p class="l-p">Statika — kuchlar ta'sirida harakatsiz turgan jismlarni o'rganuvchi fizika bo'limi. Bino, ko'prik, kran — barchasi statika qonunlari asosida quriladi.</p>
+<div class="formula-box"><span class="f-eq">ΣF = 0</span><div class="f-desc">Barcha kuchlar yig'indisi nolga teng bo'lsa — jism muvozanatda. Bu shartning buzilishi — harakatlanish yoki qulab tushish.</div></div>
+<div class="cpt"><h4>Muvozanat shartlari</h4><p><b>1-shart:</b> Barcha kuchlar yig'indisi nol: ΣF = 0<br><b>2-shart:</b> Barcha momentlar yig'indisi nol: ΣM = 0<br>Bu ikki shart bajarilsa jism mutlaq muvozanatda.</p></div>
+<p class="l-p">Misol: Shiftda osilib turgan 5 kg lampa. Ipning tortish kuchi = P = mg = 5 × 9.8 = 49 N. ΣF = T − P = 49 − 49 = 0. Muvozanat!</p>
+<div class="did-you-know"><h4>💡 Bilasizmi?</h4><p>Piza qo'ng'irog'i qulashi rezonans tebranish natijasi emas, balki qurilish paytida poydevor bir tomoniga og'ishi — ya'ni statik muvozanat buzilishi. Buни to'g'rilash uchun bir tomoniga yuk qo'yilgan.</p></div>`,
+   why_content:`<div class="why-hero"><h4>🌍 Statika hayotning poydevori</h4><p>Statikani bilmasdan bino, ko'prik, kran, stol ham qurib bo'lmaydi. Dunyo bo'ylab barcha muhandislar statika qonunlarini kunlik ishlarida qo'llashadi.</p></div>
+<div class="why-example"><div class="we-hdr"><div class="we-ico">🏛️</div><div class="we-ttl">Tarixiy binolar</div></div><div class="we-body">Misr piramidasi 4500 yil turibdi. Qadimgi misrliklar statikani bilmasada, tajriba orqali ΣF = 0 shartini ta'minladilar. Har bir tosh boshqasini qo'llab-quvvatlaydi. <span class="we-highlight">Statika — abadiylik sirri.</span></div></div>
+<div class="why-example"><div class="we-hdr"><div class="we-ico">🌉</div><div class="we-ttl">Ko'priklar</div></div><div class="we-body">Golden Gate ko'prigi (San-Francisco) 1937 yildan buyon turgan oyoq. Har kuni 100 000 avtomobil o'tadi. Muhandislar ΣF = 0 va ΣM = 0 ni ta'minlab, <span class="we-highlight">millionlab tonna yukni</span> ko'taradigan tuzilma yaratdilar.</div></div>
+<div class="why-example"><div class="we-hdr"><div class="we-ico">🏗️</div><div class="we-ttl">Qurilish kranlari</div></div><div class="we-body">Kran 10 tonna yuk ko'tarayapti. Agar muvozanat buzilsa — kran ag'dariladi. Operator yuk og'irligini, kranning momentini va ΣM = 0 shartini nazorat qiladi. <span class="we-highlight">Statika = xavfsizlik.</span></div></div>`,
+   ts:[{q:'Muvozanat asosiy sharti?',o:['ΣF > 0','ΣF = 0','ΣF < 0','ΣF = max'],a:1,f:'ΣF = 0 — kuchlar muvozanati'},{q:'5 kg lampa shiftda osilib turibdi. Ip kuchi?',o:['5 N','49 N','50 N','9.8 N'],a:1,f:'T = P = mg = 5×9.8 = 49 N ≈ 50 N'},{q:'ΣF ≠ 0 bo\'lsa jism...',o:['Tinch turadi','Tezlanadi (Nyuton 2)','Sekinlashadi','Aylanadi'],a:1,f:'ΣF ≠ 0 → tezlanish (Nyuton 2-qonun)'},{q:'Poydevor bir tomonga og\'sa nima bo\'ladi?',o:['Hech narsa','Statik muvozanat buziladi','Tezlanadi','Isiydi'],a:1,f:'Muvozanat buziladi → qulab tushish xavfi'},{q:'Qaysi muhandislik sohasi statika asosiga qurilgan?',o:['Elektr muhandisligi','Qurilish muhandisligi','Kompyuter muhandisligi','Kimyo muhandisligi'],a:1,f:'Qurilish muhandisligi — binolar, ko\'priklar, kranlar'}]},
+
+  {id:7,blk:'III Blok: Energiya va Saqlanish qonunlari',t:'Ish va Quvvat',sub:'Mexanik ish A=Fs, quvvat P=A/t',tm:11,
+   fml:'A = F × s',fmls:'Ish = Kuch × Masofa',
+   content:`<h3 class="l-h3">Mexanikada ish nima?</h3>
+<p class="l-p">Fizikada "ish" kundalik ma'nodan farq qiladi. Kuch ta'sir etib jism siljiganida ish bajariladi. Agar kuch bor-u siljish yo'q — ish nol!</p>
+<div class="formula-box"><span class="f-eq">A = F × s</span><div class="f-desc">Ish (Joul) = Kuch (Nyuton) × Masofa (metr). 10 N kuch, 5 m siljish: A = 50 J</div></div>
+<div class="cpt"><h4>Quvvat</h4><p>Quvvat — birlik vaqtda bajarilgan ish: P = A/t. Birlik: Vatt (W) = J/s. 1 ot kuchi = 736 Vatt.</p></div>
+<div class="formula-box"><span class="f-eq">P = A / t</span><div class="f-desc">Quvvat (Vatt) = Ish (Joul) ÷ Vaqt (soniya). 1000 J ni 10 s da: P = 100 W</div></div>
+<p class="l-p">Misol: Inson zinapoyadan chiqmoqda. Vazni 600 N, balandlik 3 m, 6 sekundda. A = F×s = 600×3 = 1800 J. P = A/t = 1800/6 = <b>300 W.</b></p>
+<div class="did-you-know"><h4>💡 Bilasizmi?</h4><p>Yorug'lik lampochkasi 60 W, kompyuter 200-400 W, inson maksimal quvvati 400-600 W. Poyga velosipedchi 1 soat davomida 300-400 W quvvat chiqara oladi.</p></div>`,
+   why_content:`<div class="why-hero"><h4>🌍 Ish va quvvat hamma yerda</h4><p>Elektr tarifi siz to'laydigan to'lov aslida energiya uchun — kWh (kilovatt-soat). Dvigatellar quvvati (ot kuchi), elevator, kran — barchasi ish va quvvat bilan o'lchanadi.</p></div>
+<div class="why-example"><div class="we-hdr"><div class="we-ico">💡</div><div class="we-ttl">Elektr energiyasi tarifi</div></div><div class="we-body">1 kWh = 1000 W × 3600 s = 3,600,000 J. Uyingizda 100 W lampochka 10 soat yonsa: A = P×t = 100×10 = <span class="we-highlight">1 kWh.</span> O'zbekistonda 1 kWh ≈ 900 so'm — siz energiya uchun to'laysiz!</div></div>
+<div class="why-example"><div class="we-hdr"><div class="we-ico">🏋️</div><div class="we-ttl">Sport va inson quvvati</div></div><div class="we-body">Powerlifter 300 kg ni 2 m ga ko'taradi: A = 300×9.8×2 = 5880 J. 3 sekundda: P = 5880/3 = <span class="we-highlight">1960 W ≈ 2.7 ot kuchi!</span> Qisqa vaqtda inson katta quvvat chiqara oladi.</div></div>
+<div class="why-example"><div class="we-hdr"><div class="we-ico">🚗</div><div class="we-ttl">Avtomobil dvigateli</div></div><div class="we-body">Oddiy mashina 100-150 ot kuchi (74-110 kW). Sport mashinasi 400-500 ot kuchi (294-368 kW). <span class="we-highlight">Katta quvvat = tezroq tezlanish.</span> F1 mashinasi 1000 ot kuchi (735 kW) — misol uchun!</div></div>`,
+   ts:[{q:'10 N kuch, 5 m. Ish=?',o:['2 J','15 J','50 J','0.5 J'],a:2,f:'A = F×s = 10×5 = 50 J'},{q:'Quvvat formulasi?',o:['P=Fs','P=A/t','P=mv','P=mgh'],a:1,f:'P = A/t — ish/vaqt'},{q:'100 J ni 5 s da. Quvvat=?',o:['500 W','20 W','5 W','100 W'],a:1,f:'P = A/t = 100/5 = 20 W'},{q:'Ish birligi?',o:['Nyuton','Vatt','Joul','Pascal'],a:2,f:'J — Joul = N × m'},{q:'Jism siljimasa (kuch bor) ish=?',o:['Katta','Kichik','Nol','O\'zgaruvchan'],a:2,f:'Siljish yo\'q → ish = 0 (A = F×0 = 0)'}]},
+
+  {id:8,blk:null,t:'Energiya',sub:'Kinetik (½mv²), potensial (mgh), saqlanish qonuni',tm:13,
+   fml:'E_k = mv² / 2',fmls:'Kinetik energiya = ½ × Massa × Tezlik²',
+   content:`<h3 class="l-h3">Energiya turlari</h3>
+<p class="l-p">Energiya — jismning ish bajarish qobiliyati. U yo'qolmaydi, faqat bir turdan ikkinchisiga o'tadi. Bu energiyaning saqlanish qonuni.</p>
+<div class="formula-box"><span class="f-eq">E_k = mv²/2</span><div class="f-desc">Kinetik energiya. m = 2 kg, v = 4 m/s: E_k = 2×16/2 = 16 J. Tezlik 2x ortsa — energiya 4x ortadi!</div></div>
+<div class="formula-box"><span class="f-eq">E_p = mgh</span><div class="f-desc">Potensial energiya. m = 5 kg, h = 10 m: E_p = 5×9.8×10 = 490 J. Balandlik ortganda energiya ko'payadi.</div></div>
+<div class="cpt"><h4>Energiyaning saqlanish qonuni</h4><p>Yopiq sistemada to'la energiya doimiy: E_k + E_p = const. Toshni yuqoridan tashlaganingizda: potensial energiya kinetik energiyaga aylanadi. Yerga tegishida barcha E_p → E_k.</p></div>
+<div class="did-you-know"><h4>💡 Bilasizmi?</h4><p>Atom bombasi E = mc² formulasi asosida ishlaydi. 1 kg massa 9×10¹⁶ J energiyaga teng — bu Hiroshimaga tashlangan bombadan 10 marta ko'p!</p></div>`,
+   why_content:`<div class="why-hero"><h4>🌍 Energiya — zamonaviy sivilizatsiyaning asosi</h4><p>Energetika, transport, iqtisodiyot — barchasi energiya tushunchasiga asoslanadi. Energiyani boshqarish — davlatlar va korporatsiyalar uchun strategik masala.</p></div>
+<div class="why-example"><div class="we-hdr"><div class="we-ico">🎢</div><div class="we-ttl">Roller-coaster</div></div><div class="we-body">Vagon eng yuqoridan pastga tushishi: E_p → E_k. Tepada: E_p = mgh. Pastda: E_k = mv²/2. Tezlik: v = √(2gh). h = 40 m: v = √(2×10×40) = <span class="we-highlight">28.3 m/s ≈ 100 km/h!</span> Hisob to'g'ri — xavfsiz.</div></div>
+<div class="why-example"><div class="we-hdr"><div class="we-ico">🌊</div><div class="we-ttl">GES — Gidroelektrostansiya</div></div><div class="we-body">Toqtog'ul GES (Qirg'iziston): suv 900 m balandlikdan tushadi. E_p = mgh. Bu energiya turbinalarni aylantiradi → elektr hosil bo'ladi. <span class="we-highlight">1 kg suv: E_p = 1×9.8×900 = 8820 J!</span></div></div>
+<div class="why-example"><div class="we-hdr"><div class="we-ico">💥</div><div class="we-ttl">Avtomobil to'qnashuvi</div></div><div class="we-body">100 km/h (27.8 m/s) da ketayotgan 1500 kg mashina to'qnashsa: E_k = 1500×27.8²/2 = <span class="we-highlight">580 000 J ≈ 580 kJ!</span> Bu energiya 30 soniyada chiqib ketadi. Kamar va yostiqlar bu energiyani so'radi.</div></div>`,
+   ts:[{q:'Kinetik energiya formulasi?',o:['E=mgh','E=Fs','E=mv²/2','E=Pt'],a:2,f:'E_k = mv²/2'},{q:'1 kg, 4 m/s. E_k=?',o:['2 J','4 J','8 J','16 J'],a:2,f:'E_k = 1×16/2 = 8 J'},{q:'Ko\'tarilsa qaysi energiya ortadi?',o:['Kinetik','Potensial','Issiqlik','Elektr'],a:1,f:'E_p = mgh — balandlik ortganda potensial ortadi'},{q:'Tezlik 2x ortsa E_k qancha bo\'ladi?',o:['2x','3x','4x','8x'],a:2,f:'E_k = mv²/2. v 2x → v² 4x → E_k 4x!'},{q:'Energiyaning saqlanish qonuni nima deydi?',o:['Energiya yo\'qoladi','Energiya faqat saqlanadi','Energiya yo\'qolmaydi, turga o\'tadi','Energiya ortadi'],a:2,f:'Energiya yo\'qolmaydi — bir turdan ikkinchisiga o\'tadi'}]},
+
+  {id:9,blk:null,t:'Impuls',sub:'Jism impulsi p=mv va to\'qnashuvlar qonuni',tm:12,
+   fml:'p = m × v',fmls:'Impuls = Massa × Tezlik (kg·m/s)',
+   content:`<h3 class="l-h3">Impuls — harakat miqdori</h3>
+<p class="l-p">Impuls — jismning "harakat kuchi". Katta massali sekin jism va kichik massali tez jism bir xil impulsga ega bo'lishi mumkin.</p>
+<div class="formula-box"><span class="f-eq">p = mv</span><div class="f-desc">Impuls (kg·m/s) = Massa (kg) × Tezlik (m/s). 1 kg, 5 m/s: p = 5 kg·m/s</div></div>
+<div class="cpt"><h4>Impuls saqlanish qonuni</h4><p>Yopiq sistemada to'la impuls doimiy: p₁ + p₂ = p₁' + p₂' (to'qnashuvdan oldin = keyin). Bu qonun to'qnashuvlar, portlashlar va raketa harakatida asosiy rol o'ynaydi.</p></div>
+<div class="formula-box"><span class="f-eq">F·Δt = Δp</span><div class="f-desc">Kuch-vaqt impulsi. Kuchli zarba, qisqa vaqtda = katta impuls o'zgarishi. Karate bo'yicha taxtani sindirish prinsipi.</div></div>
+<div class="did-you-know"><h4>💡 Bilasizmi?</h4><p>Karatechining musht zarbasida F·Δt = Δp. Qo'lni tezda to'xtatish (Δt kichik) → katta F. Shu sababli temir to'sini sindirishi mumkin!</p></div>`,
+   why_content:`<div class="why-hero"><h4>🌍 Impuls — harakat va xavfsizlik ilmi</h4><p>To'qnashuvlarda, portlashlarda, raketa harakatida — impuls saqlanish qonuni asosiy qonun. Avtomobil konstruktorlari, kosmik muhandislar, sport trenerlari bu qonunni doim qo'llaydi.</p></div>
+<div class="why-example"><div class="we-hdr"><div class="we-ico">🛸</div><div class="we-ttl">Raketa harakati</div></div><div class="we-body">Raketa gaz chiqaradi: massasi m_gaz, tezligi v_gaz. Impuls saqlanishi: m_raketa × v_raketa = m_gaz × v_gaz. Gaz qanchalik tez va ko'p chiqsa, <span class="we-highlight">raketa shunchalik tez uchadi.</span></div></div>
+<div class="why-example"><div class="we-hdr"><div class="we-ico">🥊</div><div class="we-ttl">Boks va sport xavfsizligi</div></div><div class="we-body">Boksyorning qo'lqopi nega katta? F·Δt = Δp. Qo'lqop Δt ni oshiradi → F kamayadi. Bir xil zarba bilan kamroq zarar. <span class="we-highlight">Yostiq prinsipi = Δt oshirish = F kamaytirish.</span></div></div>
+<div class="why-example"><div class="we-hdr"><div class="we-ico">🚗</div><div class="we-ttl">Havo yostig'i (airbag)</div></div><div class="we-body">To'qnashuvda airbag Δt ni 0.001 s dan 0.05 s ga oshiradi. Δp bir xil, lekin F = Δp/Δt: vaqt 50x ortsa → kuch 50x kamayadi. <span class="we-highlight">Bu hayot saqlovchi fizika!</span></div></div>`,
+   ts:[{q:'Impuls formulasi?',o:['p=ma','p=mv','p=Fs','p=mgh'],a:1,f:'p = mv — massa × tezlik'},{q:'1 kg, 5 m/s. p=?',o:['0.2 kg·m/s','5 kg·m/s','10 kg·m/s','1 kg·m/s'],a:1,f:'p = 1×5 = 5 kg·m/s'},{q:'Yopiq sistemada impuls?',o:['Ortadi','Kamayadi','Saqlanadi','Nol bo\'ladi'],a:2,f:'Impuls saqlanish qonuni'},{q:'Airbag nima uchun yordam beradi?',o:['Kuch kichrayadi','Vaqtni oshiradi → kuch kamayadi','Impuls kamaytiradi','Tezlikni oshiradi'],a:1,f:'F·Δt = Δp. Δt oshsa → F kamayadi'},{q:'Raketa gaz chiqarsa nima bo\'ladi?',o:['Impuls yo\'qoladi','Impuls saqlanadi, raketa tezlashadi','Impuls ortadi','Raketa sekinlashadi'],a:1,f:'Impuls saqlanadi: gaz pastga → raketa yuqoriga'}]},
+
+  {id:10,blk:'IV Blok: Molekulyar fizika va Issiqlik',t:'Modda tuzilishi',sub:'Molekulalar, atomlar, moddaning 3 holati',tm:10,
+   fml:'N_A = 6×10²³',fmls:'Avogadro soni — 1 mol ichidagi zarralar soni',
+   content:`<h3 class="l-h3">Moddaning molekulyar tuzilishi</h3>
+<p class="l-p">Barcha moddalar atomlar va molekulalardan iborat. Bu zarralar shunchalik kichikki, 1 mm² da millionlab atom joylashgan. Ular doimo harakatda — bu issiqlik harakati deyiladi.</p>
+<div class="formula-box"><span class="f-eq">N_A = 6.022×10²³</span><div class="f-desc">Avogadro soni: 1 mol modda tarkibida shuncha zarracha bor. 18 g suv = 1 mol = 6×10²³ ta H₂O molekulasi!</div></div>
+<div class="cpt"><h4>Moddaning 3 holati</h4><p><b>Qattiq:</b> Molekulalar tartibli (kristall), kam harakat qiladi. Shakl va hajm saqlanadi.<br><b>Suyuqlik:</b> Molekulalar erkin, lekin bog'langan. Hajm saqlanadi, shakl olmaydi.<br><b>Gaz:</b> Molekulalar butunlay erkin, tez harakat. Hajm ham, shakl ham saqlanmaydi.</p></div>
+<div class="did-you-know"><h4>💡 Bilasizmi?</h4><p>1 litr havoda ≈ 2.7×10²² ta molekula bor. Agar ular bir-bir sanasangiz, soniyasiga 1 milliard sanasangiz ham, 860 million yil ketadi!</p></div>`,
+   why_content:`<div class="why-hero"><h4>🌍 Molekulyar fizika qayerda ishlaydi?</h4><p>Moddaning molekulyar tuzilishini bilmasdan dori yaratib bo'lmaydi, materiallar sinab bo'lmaydi, kimyoviy jarayonlarni tushunib bo'lmaydi.</p></div>
+<div class="why-example"><div class="we-hdr"><div class="we-ico">💊</div><div class="we-ttl">Farmatsevtika</div></div><div class="we-body">Dori qon ichida tarqalishi — diffuziya. Molekulalar yuqori konsentratsiyadan past konsentratsiyaga o'tadi. Dorini qancha vaqtda qabul qilish, qanday miqdorda — <span class="we-highlight">barchasi molekulyar fizika.</span></div></div>
+<div class="why-example"><div class="we-hdr"><div class="we-ico">🌡️</div><div class="we-ttl">Temperatura va harorat</div></div><div class="we-body">Temperatura — molekulalarning o'rtacha kinetik energiyasi. Isitganingizda molekulalar tezroq harakatlanadi. <span class="we-highlight">0°C = 273 K</span>. Absolyut nol (−273°C) da barcha harakat to'xtaydi.</div></div>
+<div class="why-example"><div class="we-hdr"><div class="we-ico">🧊</div><div class="we-ttl">Muz, suv, bug' — bir modda!</div></div><div class="we-body">H₂O ning 3 holati: −10°C da muz (qattiq), 20°C da suv (suyuq), 110°C da bug' (gaz). Faqat molekulalar tezligi farq qiladi. <span class="we-highlight">Temperatura = harakat tezligi.</span></div></div>`,
+   ts:[{q:'Avogadro soni taxminan?',o:['6×10²³','6×10¹²','3×10²³','1×10²³'],a:0,f:'N_A = 6.022×10²³ mol⁻¹'},{q:'Gazda molekulalar qanday harakatlanadi?',o:['Qattiq bog\'langan','Erkin harakat','Tartibli','Harakatsiz'],a:1,f:'Gazda molekulalar erkin va tez harakat qiladi'},{q:'Suyuqlikda nima saqlanadi?',o:['Shakl saqlanadi','Hajm saqlanadi','Ikkalasi saqlanadi','Hech biri'],a:1,f:'Suyuqlik: hajm saqlanadi, shakl olmaydi'},{q:'Temperatura nimani ifodalaydi?',o:['Massa','Hajm','Molekulalar o\'rtacha kinetik energiyasi','Kuch'],a:2,f:'Temperatura = molekulalar o\'rtacha kinetik energiyasi'},{q:'Qattiq jismda kristall tuzilish bormi?',o:['Ha, ko\'pchiligida','Yo\'q','Faqat metallarda','Faqat muzda'],a:0,f:'Ko\'pchilik qattiq jismlar kristall tuzilishga ega'}]},
+
+  {id:11,blk:null,t:'Issiqlik jarayonlari',sub:'Temperatura, Q=cmΔt, yonish issiqligi',tm:13,
+   fml:'Q = c·m·Δt',fmls:'Issiqlik miqdori = Solishtirma sig\'im × Massa × ΔT',
+   content:`<h3 class="l-h3">Issiqlik almashinuvi</h3>
+<p class="l-p">Issiqlik — energiyaning yuqori haroratli jismdan past haroratliga o'tishi. Bu jarayon 3 usulda bo'ladi: issiqlik o'tkazuvchanlik, konveksiya va nurlanish.</p>
+<div class="formula-box"><span class="f-eq">Q = cmΔt</span><div class="f-desc">c — solishtirma issiqlik sig'imi (J/kg·K). Suv uchun c = 4200 J/(kg·K). 1 kg suvni 1°C isitish: Q = 4200 J</div></div>
+<div class="cpt"><h4>Solishtirma issiqlik sig'imi</h4><p>Har xil moddalar bir xil miqdorda isishi uchun turli miqdorda issiqlik kerak. Suv c = 4200, mis c = 385, temir c = 460, oltin c = 130 J/(kg·K). Suv eng katta c ga ega!</p></div>
+<div class="formula-box"><span class="f-eq">Q = m·q</span><div class="f-desc">Yonish issiqligi. q — solishtirma yonish issiqligi (J/kg). Benzin: q = 44×10⁶ J/kg. 1 litr benzin = 32×10⁶ J!</div></div>
+<div class="did-you-know"><h4>💡 Bilasizmi?</h4><p>Suv c = 4200 J/(kg·K) — juda katta. Shuning uchun dengiz bo'yida harorat keskin o'zgarmaydi. Okean iqlimni barqarorlashtirishda muhim rol o'ynaydi.</p></div>`,
+   why_content:`<div class="why-hero"><h4>🌍 Issiqlik qonunlari hayotimizda</h4><p>Uyni isitish, ovqat pishirish, dvigatel ishlashi, iqlim — barchasi issiqlik qonunlariga asoslanadi. Energiyani tejash ham shu qonunlarni bilishdan boshlanadi.</p></div>
+<div class="why-example"><div class="we-hdr"><div class="we-ico">☕</div><div class="we-ttl">Choy va qahva harorati</div></div><div class="we-body">250 ml suvni (m = 0.25 kg) 20°C dan 100°C ga isitish: Q = cmΔt = 4200 × 0.25 × 80 = <span class="we-highlight">84 000 J = 84 kJ.</span> Elektr choynik 1500 W da: t = Q/P = 84000/1500 = 56 soniya!</div></div>
+<div class="why-example"><div class="we-hdr"><div class="we-ico">🚗</div><div class="we-ttl">Avtomobil dvigateli sovutma</div></div><div class="we-body">Dvigatel 90°C da ishlaydi. Sovutish uchun suv ishlatiladi. Suv c = 4200 — katta c tufayli ko'p issiqlik yutadi. <span class="we-highlight">Suvsiz motor 5 daqiqada yonib ketadi.</span></div></div>
+<div class="why-example"><div class="we-hdr"><div class="we-ico">🌊</div><div class="we-ttl">Iqlim va okean</div></div><div class="we-body">Golfstrim (Atlantika okean oqimi) Yevropani iliq saqlaydi. Suv katta c tufayli ko'p issiqlik saqlaydi. Golfstrim yo'q bo'lsa, Buyuk Britaniya iqlimi Sibir kabi soviq bo'lardi. <span class="we-highlight">Okean = Yerning isitish tizimi.</span></div></div>`,
+   ts:[{q:'Issiqlik miqdori formulasi?',o:['Q=Pt','Q=cmΔt','Q=mgh','Q=mv²/2'],a:1,f:'Q = c·m·Δt'},{q:'1 kg suvni 10°C ga isitish. (c=4200) Q=?',o:['420 J','4200 J','42000 J','420000 J'],a:2,f:'Q = 4200×1×10 = 42000 J = 42 kJ'},{q:'c — bu nima?',o:['Tezlik','Solishtirma issiqlik sig\'imi','Issiqlik','Temperatura'],a:1,f:'c — solishtirma issiqlik sig\'imi J/(kg·K)'},{q:'Suvning c qiymati?',o:['420 J/(kg·K)','4200 J/(kg·K)','42000 J/(kg·K)','400 J/(kg·K)'],a:1,f:'Suv: c = 4200 J/(kg·K) — juda katta qiymat'},{q:'Qaysi modda eng katta c ga ega?',o:['Mis','Temir','Suv','Oltin'],a:2,f:'Suv c = 4200 — barcha oddiy moddalar ichida eng katta'}]},
+
+  {id:12,blk:null,t:'Termodinamika asoslari',sub:'Ichki energiya, ΔU=Q-A (1-qonun)',tm:14,
+   fml:'ΔU = Q − A',fmls:'Ichki energiya o\'zgarishi = Issiqlik − Ish',
+   content:`<h3 class="l-h3">Termodinamika 1-qonuni</h3>
+<p class="l-p">Termodinamika — issiqlik va ish o'rtasidagi munosabatni o'rganadi. 1-qonun energiyaning saqlanish qonunining termik ko'rinishi.</p>
+<div class="formula-box"><span class="f-eq">ΔU = Q − A</span><div class="f-desc">U — ichki energiya, Q — berilgan issiqlik, A — gaz bajargan ish. Hamma narsa energiya balansi!</div></div>
+<div class="cpt"><h4>Ichki energiya</h4><p>Ichki energiya — jism tarkibidagi barcha molekulalarning kinetik va potensial energiyalari yig'indisi. Isitganda U ortadi, sovutganda kamayadi. U = f(T).</p></div>
+<p class="l-p">Misol: Gazga Q = 300 J issiqlik berildi, gaz A = 100 J ish bajardi. <br>ΔU = Q − A = 300 − 100 = <b>200 J ortdi.</b></p>
+<div class="did-you-know"><h4>💡 Bilasizmi?</h4><p>Termodinamika 2-qonuni bo'yicha issiqlik har doim sovuqdan issiqqa o'tolmaydi. Muzlatgich shuning uchun elektr iste'mol qiladi — bu o'tishni ta'minlash uchun energiya kerak.</p></div>`,
+   why_content:`<div class="why-hero"><h4>🌍 Termodinamika zamonaviy energetikaning asosi</h4><p>Elektrostansiyalar, dvigatellar, muzlatgich, konditsioner — barchasining ishlash prinsipi termodinamika qonunlarida. Iqtisodiy samaradorlik ham bu qonunlarga bog'liq.</p></div>
+<div class="why-example"><div class="we-hdr"><div class="we-ico">⚡</div><div class="we-ttl">Issiqlik elektrstansiya</div></div><div class="we-body">Ko'mir yonadi → issiqlik → bug' → turbina → elektr. Har bosqichda ΔU = Q − A. Samaradorlik: η = A/Q ≈ 30-40%. Ya'ni <span class="we-highlight">100 J yonganda faqat 30-40 J elektr.</span> Qolgan issiqlikka aylanadi.</div></div>
+<div class="why-example"><div class="we-hdr"><div class="we-ico">❄️</div><div class="we-ttl">Muzlatgich va konditsioner</div></div><div class="we-body">Muzlatgich 2-qonunga qarshi ishlay olmaydi. Shuning uchun elektr kerak. Konditsioner xona ichidan issiqlikni tashqariga "pompalaydi". <span class="we-highlight">Elektr iste'moli = qonunni chetlab o'tish narxi.</span></div></div>
+<div class="why-example"><div class="we-hdr"><div class="we-ico">🔥</div><div class="we-ttl">Ichki yonuv dvigateli</div></div><div class="we-body">Benzin yonadi → Q beriladi. Piston harakat qiladi → A bajariladi. ΔU = Q − A. Dvigatel samaradorligi η ≈ 25-35%. <span class="we-highlight">Yoqilg'ining 65-75% issiqlikka!</span> Elektr mashinalar samaraliroq (90%+).</div></div>`,
+   ts:[{q:'Termodinamika 1-qonuni?',o:['ΔU=Q+A','ΔU=Q-A','ΔU=Q×A','ΔU=Q/A'],a:1,f:'ΔU = Q − A'},{q:'Q=300J, A=100J. ΔU=?',o:['400J','200J','-200J','100J'],a:1,f:'ΔU = 300 − 100 = 200 J ortdi'},{q:'Ichki energiya nima?',o:['Kinetik+potensial','Faqat kinetik','Molekulalar energiyalari yig\'indisi','Kimyoviy energiya'],a:2,f:'U = barcha molekulalar kinetik + potensial energiyasi'},{q:'Muzlatgich nima uchun elektr kerak?',o:['Yorug\'lik uchun','2-qonun: issiqlik o\'z-o\'zidan sovuqdan issiqqa o\'tmaydi','Ovoz uchun','Harakatlanish uchun'],a:1,f:'2-qonun: issiqlik natural ravishda sovuqdan issiqqa o\'tolmaydi'},{q:'Issiqlik elektrstansiya samaradorligi taxminan?',o:['90%','30-40%','70-80%','10-15%'],a:1,f:'IES samaradorligi 30-40% — ko\'pi issiqlikka aylanadi'}]},
+];
+
+// Generate remaining topics (13-30) with standard structure
+const EXTRA_TOPICS=[
+  {id:13,blk:'V Blok: Elektr hodisalari (Zaryadlar va Oqim)',t:'Elektr zaryadi',sub:'Zaryadlar, Kulon qonuni F=kq₁q₂/r²',tm:11,fml:'F = kq₁q₂/r²',fmls:'Kulon qonuni'},
+  {id:14,blk:null,t:'Elektr maydoni',sub:'Kuch chiziqlari, maydon kuchlanganligi E=F/q',tm:12,fml:'E = F/q',fmls:'Maydon kuchlanganligi'},
+  {id:15,blk:null,t:'Elektr sig\'imi',sub:'Kondensatorlar C=Q/U',tm:10,fml:'C = Q/U',fmls:'Sig\'im = Zaryad ÷ Kuchlanish'},
+  {id:16,blk:null,t:'O\'zgarmas tok',sub:'Tok kuchi, kuchlanish, Om qonuni I=U/R',tm:11,fml:'I = U/R',fmls:'Om qonuni'},
+  {id:17,blk:null,t:'Om qonuni',sub:'U = IR',tm:10,fml:'U = I × R',fmls:'Kuchlanish = Tok × Qarshilik'},
+  {id:18,blk:null,t:'Ketma-ket va parallel ulash',sub:'R_ket=R₁+R₂, 1/R_par=1/R₁+1/R₂',tm:13,fml:'R = R₁+R₂',fmls:'Ketma-ket ulash'},
+  {id:19,blk:null,t:'Tokning ishi va quvvati',sub:'Joul-Lens qonuni P=UI, Q=I²Rt',tm:11,fml:'P = U × I',fmls:'Elektr quvvati'},
+  {id:20,blk:'VI Blok: Magnetizm (Ko\'rinmas kuchlar)',t:'Magnit maydoni',sub:'Doimiy magnitlar, kompas, Tesla',tm:10,fml:'B = F/(IL)',fmls:'Magnit induksiyasi (Tesla)'},
+  {id:21,blk:null,t:'Elektr tokining magnit ta\'siri',sub:'Ersted tajribasi, elektromagnitlar',tm:11,fml:'F = BIL·sinα',fmls:'Amper kuchi'},
+  {id:22,blk:null,t:'Amper kuchi',sub:'Magnit maydon va tokli o\'tkazgich',tm:10,fml:'F = BIL sinα',fmls:'Amper kuchi formulasi'},
+  {id:23,blk:null,t:'Lorens kuchi',sub:'Harakatlanuvchi zaryadlarga ta\'sir F=qvBsinα',tm:11,fml:'F = qvB sinα',fmls:'Lorens kuchi'},
+  {id:24,blk:null,t:'Elektromagnit induksiya',sub:'Faraday qonuni ε=−ΔΦ/Δt',tm:13,fml:'ε = −ΔΦ/Δt',fmls:'Induksiya EYuKi'},
+  {id:25,blk:'VII Blok: Tebranishlar va To\'lqinlar',t:'Mexanik tebranishlar',sub:'Mayatnik davri T=2π√(L/g)',tm:11,fml:'T = 2π√(L/g)',fmls:'Mayatnik davri'},
+  {id:26,blk:null,t:'To\'lqinlar',sub:'Tovush to\'lqinlari v=λf',tm:11,fml:'v = λf',fmls:'To\'lqin tezligi = λ × chastota'},
+  {id:27,blk:null,t:'Elektromagnit to\'lqinlar',sub:'Radio, yorug\'lik, Wi-Fi c=3×10⁸',tm:10,fml:'c = 3×10⁸ m/s',fmls:'Yorug\'lik tezligi vakuumda'},
+  {id:28,blk:'VIII Blok: Optika (Yorug\'lik fizikasi)',t:'Yorug\'likning qaytishi',sub:'Ko\'zgular, qaytish qonuni',tm:10,fml:'θ_tush = θ_qay',fmls:'Tushish burchagi = Qaytish burchagi'},
+  {id:29,blk:null,t:'Yorug\'likning sinishi',sub:'Linzalar, ko\'zoynaklar n=c/v',tm:13,fml:'n = c/v',fmls:'Sindirish ko\'rsatkichi'},
+  {id:30,blk:null,t:'Yorug\'likning rangi',sub:'Spektr, kamalak, λ:400-700nm',tm:11,fml:'λ: 400–700 nm',fmls:'Ko\'rinadigan spektr to\'lqin uzunligi'}
+];
+
+// Standard tests for extra topics
+const EXTRA_TESTS={
+  13:[{q:'Bir xil zaryadlar?',o:['Tortadi','Itaradi','Ta\'sir etmaydi','Aylantiradi'],a:1,f:'Bir xil zaryadlar itaradi'},{q:'Zaryad birligi?',o:['Amper','Kulon','Volt','Vatt'],a:1,f:'C — Kulon'},{q:'Kulon formulasi?',o:['F=ma','F=kq₁q₂/r²','F=qE','F=BIL'],a:1,f:'F = kq₁q₂/r²'},{q:'Elektron zaryadi?',o:['Musbat','Manfiy','Neytral','O\'zgaruvchan'],a:1,f:'Elektron — manfiy'},{q:'k qiymati?',o:['9×10³','9×10⁶','9×10⁹','9×10¹²'],a:2,f:'k = 9×10⁹ N·m²/C²'}],
+  14:[{q:'E formulasi?',o:['E=F/q','E=qV','E=kq/r²','E=BIL'],a:0,f:'E = F/q'},{q:'Kuch chiziqlari yo\'nalishi?',o:['Manfiydan musbatga','Musbatdan manfiyga','Har ikkala','Yo\'nalishi yo\'q'],a:1,f:'Musbat → manfiy'},{q:'E birligi?',o:['Amper','Volt','N/C','Joul'],a:2,f:'N/C = V/m'},{q:'E ortsa kuch?',o:['Kamayadi','Ortadi','O\'zgarmaydi','Nol'],a:1,f:'F = qE, E ortsa F ortadi'},{q:'Yashin o\'tkazgich nimaga?',o:['Chiroq','Maydonni yerga','Muzlatish','Isitish'],a:1,f:'Elektr maydonni yerga uzatadi'}],
+  15:[{q:'C formulasi?',o:['C=QU','C=Q/U','C=U/Q','C=Q²/U'],a:1,f:'C = Q/U'},{q:'C birligi?',o:['Kulon','Volt','Farad','Amper'],a:2,f:'F — Farad'},{q:'Kondensator energiyasi?',o:['W=CU','W=CU²/2','W=Q/C','W=QU'],a:1,f:'W = CU²/2'},{q:'Defibrillator nima uchun kondensator?',o:['Isitish','Tez razryad','Muzlatish','Yorug\'lik'],a:1,f:'Tez razryad kerak'},{q:'C ortsa (U=const) energiya?',o:['Kamayadi','Ortadi','O\'zgarmaydi','Nol'],a:1,f:'W=CU²/2, C ortsa W ortadi'}],
+  16:[{q:'Om qonuni?',o:['I=UR','I=U/R','I=R/U','U=IR²'],a:1,f:'I = U/R'},{q:'12V, 4 Om. I=?',o:['48A','3A','0.33A','8A'],a:1,f:'I=12/4=3A'},{q:'Tok birligi?',o:['Volt','Om','Amper','Kulon'],a:2,f:'A — Amper'},{q:'Qarshilik birligi?',o:['Amper','Volt','Om','Siemens'],a:2,f:'Ω — Om'},{q:'U ortsa (R=const) I?',o:['Kamayadi','Ortadi','O\'zgarmaydi','Nol'],a:1,f:'I=U/R, U ortsa I ortadi'}],
+  17:[{q:'U formulasi?',o:['U=IR','I=UR','R=UI','U=I/R'],a:0,f:'U = IR'},{q:'2A, 100 Om. U=?',o:['50V','200V','0.02V','100V'],a:1,f:'U=2×100=200V'},{q:'Grafik I=f(U)?',o:['Egri','To\'g\'ri chiziq','Parabola','Gorizontal'],a:1,f:'To\'g\'ri chiziq — lineer'},{q:'R 2x ortsa (I=const) U?',o:['2x ortadi','Kamayadi','O\'zgarmaydi','Nol'],a:0,f:'U=IR, R 2x → U 2x'},{q:'Supero\'tkazuvchanlikda R?',o:['∞','1','0','Max'],a:2,f:'R = 0'}],
+  18:[{q:'Ketma-ket ulashda R?',o:['R=R₁+R₂','1/R=1/R₁+1/R₂','R=R₁×R₂','R=R₁-R₂'],a:0,f:'R = R₁+R₂'},{q:'2 Om + 3 Om ketma-ket?',o:['1.2 Om','5 Om','6 Om','0.5 Om'],a:1,f:'R=2+3=5 Om'},{q:'Parallel ulashda kuchlanish?',o:['Qo\'shiladi','Bir xil','Kamayadi','Nol'],a:1,f:'Parallel: kuchlanish bir xil'},{q:'Ketma-ket da tok?',o:['Bo\'linadi','Bir xil','Qo\'shiladi','Nol'],a:1,f:'Ketma-ket: tok bir xil'},{q:'2 Om + 2 Om parallel?',o:['4 Om','2 Om','1 Om','0.5 Om'],a:2,f:'1/R=1/2+1/2=1, R=1 Om'}],
+  19:[{q:'Elektr quvvati?',o:['P=I/U','P=UI','P=IR','P=U/I'],a:1,f:'P = UI'},{q:'Joul-Lens: Q=?',o:['Q=cmΔt','Q=I²Rt','Q=mgh','Q=Pt'],a:1,f:'Q = I²Rt'},{q:'220V, 5A. P=?',o:['44W','1100W','225W','215W'],a:1,f:'P=220×5=1100W'},{q:'Sigorta nima uchun?',o:['Kuchlanish oshirish','Ortiqcha tokdan himoya','Tok kamaytirish','Yorug\'lik'],a:1,f:'Ortiqcha tokdan himoya'},{q:'I 2x ortsa Q?',o:['2x','4x','1/2','Bir xil'],a:1,f:'Q=I²Rt, I 2x → Q 4x'}],
+  20:[{q:'Kompas nima ko\'rsatadi?',o:['Gravitatsiya','Magnit maydoni yo\'nalishi','Elektr maydoni','Shamol'],a:1,f:'Yer magnit maydonini ko\'rsatadi'},{q:'Magnit induksiyasi birligi?',o:['Amper','Nyuton','Tesla','Volt'],a:2,f:'T — Tesla'},{q:'Bir xil qutblar?',o:['Tortishadi','Itaradi','Ta\'sir etmaydi','Aylanadi'],a:1,f:'Bir xil qutblar itaradi'},{q:'MRI qanday ishlaydi?',o:['Isitish','Kuchli magnit bilan tasvir','Tok o\'lchash','Yorug\'lik'],a:1,f:'Magnit maydonida rezonans'},{q:'Magnit maydoni hosil qiluvchi?',o:['Faqat magnitlar','Tok va magnitlar','Faqat tok','Issiqlik'],a:1,f:'Tok ham magnit maydoni hosil qiladi'}],
+  21:[{q:'Kim kashf etdi?',o:['Nyuton','Ersted','Faraday','Kulon'],a:1,f:'Ersted — 1820'},{q:'Amper kuchi?',o:['F=qE','F=BIL','F=ma','F=kq/r²'],a:1,f:'F = BIL·sinα'},{q:'Elektromagnit kuchaytirish?',o:['Tok kamaytirish','O\'rash oshirish','R kamaytirish','U kamaytirish'],a:1,f:'Ko\'p o\'rash → kuchliroq'},{q:'Tok o\'chsa elektromagnit?',o:['Kuchliroq','Zaifroq','Yo\'qoladi','O\'zgarmaydi'],a:2,f:'Tok yo\'q → magnit yo\'q'},{q:'Kran qaysi materiallarni ko\'taradi?',o:['Barcha','Ferromagnit (temir)','Faqat mis','Oltin'],a:1,f:'Ferromagnit materiallar'}],
+  22:[{q:'Amper kuchi formulasi?',o:['F=BIL','F=qvB','F=kq/r²','F=ma'],a:0,f:'F = BIL·sinα'},{q:'α=90° da sin=?',o:['0','0.5','1','√2/2'],a:2,f:'sin90°=1 — maksimal'},{q:'Elektr motor prinsipi?',o:['Joul-Lens','Amper kuchi','Kulon','Nyuton'],a:1,f:'Amper kuchidan harakat'},{q:'B 2x ortsa F?',o:['0.5x','Bir xil','2x','4x'],a:2,f:'F=BIL, B 2x → F 2x'},{q:'Galvanometr nima o\'lchaydi?',o:['Kuchlanish','Qarshilik','Kichik toklarni','Quvvat'],a:2,f:'Kichik toklarni o\'lchaydi'}],
+  23:[{q:'Lorens kuchi formulasi?',o:['F=qvB','F=BIL','F=kq/r²','F=ma'],a:0,f:'F = qvB·sinα'},{q:'Lorens kuchi yo\'nalishi?',o:['Harakat bo\'ylab','Maydon bo\'ylab','Ikkalasiga perp.','Yuqoriga'],a:2,f:'v va B ga perpendikulyar'},{q:'Lorens kuchi ish bajaradimi?',o:['Ha','Yo\'q','Ba\'zan','Har doim'],a:1,f:'Perpendikulyar kuch ish bajarmaydi'},{q:'LHC nima?',o:['Kompyuter','Katta hadron kollayderi','Radar','Teleskop'],a:1,f:'Large Hadron Collider'},{q:'Zaryad maydon bo\'ylab harakat qilsa F?',o:['Maksimal','Nol','O\'rtacha','O\'zgaruvchan'],a:1,f:'α=0 → F=0'}],
+  24:[{q:'Kim kashf etdi?',o:['Nyuton','Ersted','Faraday','Lorens'],a:2,f:'Faraday — 1831'},{q:'EYuK hosil bo\'lishi uchun?',o:['Doimiy tok','Magnit fluksi o\'zgarishi','Kuchlanish','Harorat'],a:1,f:'Magnit fluksi o\'zgarishi'},{q:'Generator prinsipi?',o:['Amper kuchi','EM induksiya','Kulon','Joul'],a:1,f:'Induksiya asosida'},{q:'Transformator nima uchun?',o:['Tok hosil','Kuchlanish o\'zgartirish','Zaryadlash','Isitish'],a:1,f:'Kuchlanishni o\'zgartiradi'},{q:'ε birligi?',o:['Amper','Kulon','Volt','Tesla'],a:2,f:'V — Volt'}],
+  25:[{q:'Mayatnik davri formulasi?',o:['T=2π√(g/L)','T=2πL/g','T=2π√(L/g)','T=L/g'],a:2,f:'T = 2π√(L/g)'},{q:'L 4x ortsa T?',o:['4x','2x','1/2','O\'zgarmaydi'],a:1,f:'T∝√L, L 4x → T 2x'},{q:'Rezonans nima?',o:['Tebranish yo\'qoladi','Tashqi=tabiiy chastota','Energiya yo\'qoladi','Muzlash'],a:1,f:'Tashqi = tabiiy chastota'},{q:'Seysmograf nima?',o:['Havo bosimi','Zilzila o\'lchov','Harorat','Kuchlanish'],a:1,f:'Yer tebranishini o\'lchaydi'},{q:'g ortsa T?',o:['Ortadi','Kamayadi','O\'zgarmaydi','Nol'],a:1,f:'T∝1/√g, g ortsa T kamayadi'}],
+  26:[{q:'To\'lqin tezligi formulasi?',o:['v=λ/f','v=λf','v=f/λ','v=λ+f'],a:1,f:'v = λf'},{q:'Tovush havoda tezligi?',o:['300 m/s','340 m/s','1500 m/s','3×10⁸ m/s'],a:1,f:'≈340 m/s'},{q:'Ultratovush tibbiyotda?',o:['Isitish','Organ tasvirlash','Operatsiya','Zaryadlash'],a:1,f:'USI organ tasvirlari'},{q:'Chastota birligi?',o:['Metr','Gerts','Soniya','Amper'],a:1,f:'Hz — Gerts'},{q:'λ ortsa (v=const) f?',o:['Ortadi','Kamayadi','O\'zgarmaydi','Nol'],a:1,f:'f=v/λ, λ ortsa f kamayadi'}],
+  27:[{q:'Yorug\'lik tezligi?',o:['3×10⁶','3×10⁸','3×10¹⁰','340'],a:1,f:'c=3×10⁸ m/s'},{q:'Ko\'rinadigan nur λ?',o:['1-10 nm','400-700 nm','1mm-1m','100 km'],a:1,f:'400-700 nm'},{q:'Rentgen to\'qimadan o\'tadi?',o:['Metaldan','Yumshoqdan o\'tadi, suyak to\'sadi','Hech narsadan','Suvdan'],a:1,f:'Suyak rentgenni to\'sadi'},{q:'Wi-Fi qanday?',o:['Sim','EM to\'lqin','Ovoz','Yorug\'lik'],a:1,f:'2.4 va 5 GHz EM to\'lqin'},{q:'Eng qisqa to\'lqin?',o:['Radio','Infraqizil','Ko\'rinadigan','Gamma'],a:3,f:'Gamma eng qisqa'}],
+  28:[{q:'Qaytish qonuni?',o:['θ_t=2θ_q','θ_t=θ_q','θ_t+θ_q=90°','θ_t=90°'],a:1,f:'Tushish = qaytish'},{q:'Tekis ko\'zguda tasvir?',o:['Haqiqiy','Virtual','Kattaroq','Kichikroq'],a:1,f:'Virtual va teskari'},{q:'30° tushsa qaytishi?',o:['60°','30°','90°','15°'],a:1,f:'30°'},{q:'Teleskopda katta ko\'zgu?',o:['Ko\'rinish','Ko\'proq nur yig\'ish','Isitish','Bezak'],a:1,f:'Ko\'proq nur yig\'adi'},{q:'Optik tolali kabel?',o:['Elektr tok','To\'liq ichki qaytish','Magnit','Tovush'],a:1,f:'To\'liq ichki qaytish'}],
+  29:[{q:'Sindirish ko\'rsatkichi?',o:['n=v/c','n=c/v','n=λf','n=sinθ'],a:1,f:'n = c/v'},{q:'Shisha n?',o:['1.0','1.5','2.5','0.5'],a:1,f:'n≈1.5'},{q:'Ko\'zoynak nima uchun?',o:['Ko\'rinish','Ko\'rish nuqsonini tuzatish','Quyoshdan','Bezak'],a:1,f:'Ko\'rish nuqsonini tuzatadi'},{q:'Suv ostida bukilgandek?',o:['Qaytish','Sinish','Ko\'z xatosi','Magnit'],a:1,f:'Sinish → ko\'rinish o\'zgaradi'},{q:'Olmos yaltirashi?',o:['Rangi','To\'liq ichki qaytish+katta n','Massa','Harorat'],a:1,f:'Katta n → yaltirash'}],
+  30:[{q:'Kamalakda necha rang?',o:['5','6','7','8'],a:2,f:'7 rang: QKYSYMK'},{q:'Eng qisqa λ rang?',o:['Qizil','Sariq','Binafsha','Yashil'],a:2,f:'Binafsha λ≈400 nm'},{q:'Kamalak qanday?',o:['Ko\'zgu','Suv tomchilarda sinish+qaytish','Magnit','Issiqlik'],a:1,f:'Suv tomchisi prizma sifatida'},{q:'Prizma oq nurni ajratadi?',o:['Ha','Yo\'q','Faqat qizil','Faqat ko\'k'],a:0,f:'Ha, dispersiya'},{q:'Qizil rang λ?',o:['400 nm','500 nm','700 nm','800 nm'],a:2,f:'Qizil λ≈700 nm'}]
+};
+
+// Merge extra topics into T
+EXTRA_TOPICS.forEach(et=>{
+  et.content=`<h3 class="l-h3">${et.t}</h3><p class="l-p">${et.t} mavzusi fizikaning muhim bo'limidir. ${et.fmls} — bu formulani tushunish ushbu mavzuning kalitidir.</p><div class="formula-box"><span class="f-eq">${et.fml}</span><div class="f-desc">${et.fmls}</div></div><div class="cpt"><h4>Asosiy tushuncha</h4><p>Bu mavzuni to'liq o'rganish uchun formulani yodlab qolish, misollar yechish va "Nega?" bo'limini o'qish tavsiya etiladi.</p></div><div class="did-you-know"><h4>💡 Bilasizmi?</h4><p>Bu qonun zamonaviy texnologiyaning asosi bo'lib, kundalik hayotimizda doim ishlaydi.</p></div>`;
+  et.why_content=`<div class="why-hero"><h4>🌍 Hayotda qayerda qo'llaniladi?</h4><p>${et.t} kontseptsiyasi zamonaviy texnologiya, muhandislik va fanlarning ko'plab sohalarida qo'llaniladi.</p></div><div class="why-example"><div class="we-hdr"><div class="we-ico">🔬</div><div class="we-ttl">Ilmiy tadqiqotlar</div></div><div class="we-body">Olimlar bu qonundan laboratoriya tadqiqotlarida va yangi texnologiyalar ishlab chiqishda foydalanadi.</div></div><div class="why-example"><div class="we-hdr"><div class="we-ico">⚙️</div><div class="we-ttl">Muhandislik</div></div><div class="we-body">Muhandislar ${et.t.toLowerCase()} bilimlarini qurilmalar va tizimlar loyihalashda qo'llaydi. <span class="we-highlight">Nazariya + amaliyot = innovatsiya.</span></div></div>`;
+  et.ts=EXTRA_TESTS[et.id]||[];
+  T.push(et);
+});
+T.sort((a,b)=>a.id-b.id);
+
+const AVATARS=['👤','🦁','🐯','🦊','🐺','🦅','⚡','🔥','💎','🚀','🎯','🏆'];
+
+// ══════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════
+let S={
+  user:null,score:0,startIdx:1,lvName:'—',
+  completed:[],timers:{},streak:0,lastDay:'',
+  aiUsed:0,aiExtra:0,aiDate:'',
+  gMsgs:[],lMsgs:[],curLesson:0,testDone:[],
+  isPrem:false,avatar:'👤',lang:'uz',theme:'light'
+};
+
+// ══════════════════════════════════════════
+// LOCALSTORAGE
+// ══════════════════════════════════════════
+function save(){
+  try{
+    localStorage.setItem('fizai_u',JSON.stringify(S.user));
+    localStorage.setItem('fizai_d',JSON.stringify({
+      score:S.score,startIdx:S.startIdx,lvName:S.lvName,
+      completed:S.completed,timers:S.timers,
+      streak:S.streak,lastDay:S.lastDay,
+      isPrem:S.isPrem,avatar:S.avatar,lang:S.lang,theme:S.theme
+    }));
+    const today=new Date().toDateString();
+    localStorage.setItem('fizai_ai',JSON.stringify({used:S.aiUsed,extra:S.aiExtra,date:today}));
+    if(S.user&&S.user.name!=='Demo'){
+      let accs=JSON.parse(localStorage.getItem('fizai_accs')||'[]');
+      const i=accs.findIndex(a=>a.name===S.user.name);
+      const entry={name:S.user.name,pass:S.user.pass,av:S.avatar};
+      if(i>=0)accs[i]=entry; else accs.unshift(entry);
+      localStorage.setItem('fizai_accs',JSON.stringify(accs.slice(0,5)));
+    }
+  }catch(e){}
+}
+function load(){
+  try{
+    S.user=JSON.parse(localStorage.getItem('fizai_u')||'null');
+    const d=JSON.parse(localStorage.getItem('fizai_d')||'{}');
+    S.score=d.score||0;S.startIdx=d.startIdx||1;S.lvName=d.lvName||'—';
+    S.completed=d.completed||[];S.timers=d.timers||{};
+    S.streak=d.streak||0;S.lastDay=d.lastDay||'';
+    S.isPrem=d.isPrem||false;S.avatar=d.avatar||'👤';
+    S.lang=d.lang||'uz';S.theme=d.theme||'light';
+    const ai=JSON.parse(localStorage.getItem('fizai_ai')||'{}');
+    const today=new Date().toDateString();
+    if(ai.date!==today){S.aiUsed=0;S.aiExtra=0;}
+    else{S.aiUsed=ai.used||0;S.aiExtra=ai.extra||0;}
+  }catch(e){}
+}
+function getAccs(){try{return JSON.parse(localStorage.getItem('fizai_accs')||'[]');}catch{return[];}}
+
+// ══════════════════════════════════════════
+// THEME & LANG
+// ══════════════════════════════════════════
+function applyTheme(t){
+  document.documentElement.setAttribute('data-theme',t);
+  S.theme=t;
+  document.getElementById('th-dark').classList.toggle('sel',t==='dark');
+  document.getElementById('th-light').classList.toggle('sel',t==='light');
+}
+function setTheme(t,el){applyTheme(t);save();}
+const LANG_LABELS={
+  uz:{start:"Bepul boshlash →",login:"Hisobim bor — Kirish",edit:"Profilni tahrirlash"},
+  en:{start:"Start for free →",login:"I have an account — Login",edit:"Edit Profile"},
+  ru:{start:"Начать бесплатно →",login:"Есть аккаунт — Войти",edit:"Редактировать"}
+};
+function setLang(l){
+  S.lang=l;
+  document.querySelectorAll('[id^="lb-"]').forEach(b=>b.classList.remove('sel'));
+  document.getElementById('lb-'+l)?.classList.add('sel');
+  const lb=LANG_LABELS[l]||LANG_LABELS.uz;
+  const s1=document.getElementById('btn-start');if(s1)s1.textContent=lb.start;
+  const s2=document.getElementById('btn-login');if(s2)s2.textContent=lb.login;
+  // Update lang attribute
+  document.documentElement.lang=l;
+  save();
+}
+
+// ══════════════════════════════════════════
+// NAV
+// ══════════════════════════════════════════
+function goTo(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));document.getElementById(id).classList.add('on');}
+function goAuth(r){showF(r);goTo('sa');loadSavedAccs();}
+function showF(r){document.getElementById('a-reg').style.display=r?'block':'none';document.getElementById('a-log').style.display=r?'none':'block';}
+function loadSavedAccs(){
+  const accs=getAccs();const wrap=document.getElementById('saved-wrap');
+  if(!accs.length){wrap.innerHTML='';return;}
+  wrap.innerHTML=`<div class="saved-accs"><p>Saqlangan hisoblar</p>${accs.map(a=>`<div class="saved-acc" onclick="quickLogin('${a.name}','${a.pass||''}','${a.av||'👤'}')"><div class="saved-acc-l"><div class="saved-acc-av">${a.av||'👤'}</div><span>${a.name}</span></div><small>Kirish →</small></div>`).join('')}</div>`;
+}
+function quickLogin(nm,pw,av){
+  S.user={name:nm,pass:pw};S.avatar=av||'👤';
+  updateStreak();initApp();goTo('sapp');save();
+}
+function switchT(nm,btn){
+  document.querySelectorAll('.tc').forEach(t=>t.classList.remove('on'));
+  document.getElementById('t-'+nm).classList.add('on');
+  document.querySelectorAll('.nv').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  if(nm==='st')renderStats();
+  if(nm==='ai')updateQuota();
+}
+function toggleEye(inputId,btnId){
+  const inp=document.getElementById(inputId);
+  const vis=inp.type==='password';
+  inp.type=vis?'text':'password';
+  document.getElementById(btnId).textContent=vis?'🙈':'👁️';
+}
+
+// ══════════════════════════════════════════
+// AUTH
+// ══════════════════════════════════════════
+function doReg(){
+  const nm=document.getElementById('r-name').value.trim();
+  const pw=document.getElementById('r-pass').value;
+  if(!nm){alert('Ismingizni kiriting!');return;}
+  if(!pw||pw.length<4){alert('Parol kamida 4 ta belgi bo\'lsin!');return;}
+  S.user={name:nm,pass:pw};save();initAssess();goTo('sas');
+}
+function doLogin(){
+  const nm=document.getElementById('l-name').value.trim();
+  const pw=document.getElementById('l-pass').value;
+  if(!nm||!pw){alert('Ism va parolni kiriting!');return;}
+  const accs=getAccs();const found=accs.find(a=>a.name===nm);
+  if(found&&found.pass&&found.pass!==pw){alert('Parol noto\'g\'ri!');return;}
+  if(found)S.avatar=found.av||'👤';
+  S.user={name:nm,pass:pw};
+  updateStreak();save();
+  if(S.completed.length>0||S.score>0){initApp();goTo('sapp');}
+  else{initAssess();goTo('sas');}
+}
+function doDemo(){S.user={name:'Demo',pass:''};save();initAssess();goTo('sas');}
+function logout(){
+  S={...S,user:null,score:0,startIdx:1,lvName:'—',completed:[],timers:{},streak:0,lastDay:'',aiUsed:0,aiExtra:0,isPrem:false,avatar:'👤'};
+  save();goTo('sl');
+}
+function updateStreak(){
+  const today=new Date().toDateString();
+  if(S.lastDay&&S.lastDay!==today){
+    const diff=(new Date(today)-new Date(S.lastDay))/(1000*60*60*24);
+    if(diff>1)S.streak=0;
+  }
+}
+
+// ══════════════════════════════════════════
+// ASSESSMENT
+// ══════════════════════════════════════════
+let qI=0,qSc=0;
+function initAssess(){qI=0;qSc=0;renderQ();}
+function renderQ(){
+  document.getElementById('as-ct').textContent=`${qI+1}/9`;
+  document.getElementById('prog-f').style.width=`${(qI/9)*100}%`;
+  const q=QS[qI];
+  const lm={easy:['Oson','lv-e'],mid:["O'rta",'lv-m'],hard:['Qiyin','lv-h']};
+  const [lt,lc]=lm[q.lv];
+  const ls=['A','B','C'];
+  document.getElementById('q-area').innerHTML=`
+    <div class="lv-pill ${lc}">${lt}</div>
+    <div class="q-txt">${q.t}</div>
+    <div class="q-opts">${q.o.map((o,i)=>`<button class="qo" onclick="ansQ(${i})"><span class="qo-l">${ls[i]}</span>${o}</button>`).join('')}</div>`;
+}
+function ansQ(idx){
+  const q=QS[qI];
+  document.querySelectorAll('.qo').forEach((b,i)=>{
+    if(i===q.a)b.classList.add('ok');
+    else if(i===idx&&idx!==q.a)b.classList.add('ng');
+    b.disabled=true;b.onclick=null;
+  });
+  if(idx===q.a)qSc+=QSC[q.lv];
+  setTimeout(()=>{qI++;qI<QS.length?renderQ():showResult();},650);
+}
+function showResult(){
+  const r=getStartInfo(qSc);
+  S.score=qSc;S.startIdx=r.st;S.lvName=r.lv;
+  document.getElementById('r-em').textContent=r.em;
+  document.getElementById('r-ttl').textContent=r.ttl;
+  document.getElementById('r-chip').textContent=`${r.lv} — ${qSc.toFixed(1)}/13.5 ball`;
+  document.getElementById('r-desc').textContent=r.desc;
+  const prev=[[r.st,'1-2 hafta'],[Math.min(r.st+1,30),'3-4 hafta'],[Math.min(r.st+2,30),'5-6 hafta']];
+  document.getElementById('r-road').innerHTML=prev.map(([id,wk])=>{const tp=T.find(x=>x.id===id);return tp?`<div class="rw"><div class="rwl">${wk}</div><div class="rwt">${tp.t}</div></div>`:''}).join('');
+  save();goTo('sre');
+}
+function selT(el){document.querySelectorAll('.topt').forEach(b=>b.classList.remove('sel'));el.classList.add('sel');}
+function startApp(){save();initApp();goTo('sapp');}
+
+// ══════════════════════════════════════════
+// APP INIT
+// ══════════════════════════════════════════
+function initApp(){
+  if(!S.user)return;
+  document.getElementById('str-n').textContent=S.streak;
+  document.getElementById('u-lv').textContent=S.lvName;
+  document.getElementById('s-nm').textContent=S.user.name;
+  document.getElementById('s-av').textContent=S.avatar||'👤';
+  const planEl=document.getElementById('s-plan');
+  planEl.textContent=S.isPrem?'Premium ⭐':'Bepul';
+  planEl.className=S.isPrem?'plan-badge plan-prem':'plan-badge plan-free';
+  document.getElementById('arch-txt').textContent=`${S.completed.length} ta dars tugatilgan`;
+  if(S.isPrem){
+    document.getElementById('prem-lock').style.display='none';
+    document.getElementById('wk-card').style.display='block';
+    document.getElementById('cert-si').style.display='flex';
+  }
+  applyTheme(S.theme);
+  setLang(S.lang||'uz');
+  renderRoad();renderStats();updateQuota();
+}
+
+// ══════════════════════════════════════════
+// ROAD MAP
+// ══════════════════════════════════════════
+function renderRoad(){
+  const now=Date.now();let html='',done=0;
+  T.forEach(tp=>{
+    if(tp.blk)html+=`<div class="blk-lbl">${tp.blk}</div>`;
+    const isDone=S.completed.includes(tp.id);
+    if(isDone)done++;
+    const timerTs=S.timers[tp.id];
+    const isTimerLocked=timerTs&&!isDone&&(now-timerTs<15*3600*1000);
+    const prevDone=tp.id<=S.startIdx||S.completed.includes(tp.id-1)||(tp.id-1<S.startIdx);
+    const isLocked=!isDone&&!isTimerLocked&&tp.id>S.startIdx&&!prevDone;
+    let nc='ln-l',nc2='🔒',rc='lk',oc='';
+    if(isDone){nc='ln-d';nc2='✓';rc='dn';oc=`onclick="openLesson(${tp.id})"`;}
+    else if(isTimerLocked){
+      const rem=timerTs+15*3600*1000-now;
+      const h=Math.floor(rem/3600000),m=Math.floor((rem%3600000)/60000);
+      nc='ln-t';nc2=`${h}h<br>${m}m`;rc='tmr';
+    }
+    else if(!isLocked){nc='ln-a';nc2=`${tp.id}`;rc=(tp.id===S.startIdx&&!isDone)?'act':'';oc=`onclick="openLesson(${tp.id})"`;}
+    html+=`<div class="lr ${rc}" ${oc}><div class="ln ${nc}">${nc2}</div><div class="li"><h4>${tp.t}</h4><p>${tp.sub}</p></div><span class="lt">${tp.tm} daq</span></div>`;
+  });
+  document.getElementById('road-list').innerHTML=html;
+  document.getElementById('dn-n').textContent=done;
+  document.getElementById('lf-n').textContent=30-done;
+  document.getElementById('s-dn').textContent=done;
+  document.getElementById('arch-txt').textContent=`${done} ta dars tugatilgan`;
+}
+
+// ══════════════════════════════════════════
+// STATS
+// ══════════════════════════════════════════
+function renderStats(){
+  document.getElementById('s-str').textContent=S.streak;
+  document.getElementById('s-lv').textContent=S.lvName.split(' ')[0]||'—';
+  const lim=S.isPrem?'∞':10;
+  document.getElementById('s-ai').textContent=`${S.aiUsed+S.aiExtra}/${lim}`;
+  document.getElementById('s-tip').textContent=S.completed.length===0?'Birinchi darsni boshlang!':
+    S.completed.length<5?`Zo'r! ${S.completed.length} dars. Davom eting!`:`Ajoyib! ${S.completed.length}/30 mavzu.`;
+  const days=['Du','Se','Ch','Pa','Ju','Sh','Ya'];
+  const vals=[0,0,0,0,0,S.completed.length>0?60:0,S.completed.length>1?80:0];
+  document.getElementById('bars').innerHTML=days.map((d,i)=>`<div class="bc"><div class="bf" style="height:${vals[i]}%"></div><div class="bl">${d}</div></div>`).join('');
+  if(S.isPrem){
+    document.getElementById('w-dn').textContent=S.completed.length+' ta';
+    document.getElementById('w-str').textContent=S.streak;
+    document.getElementById('w-ai').textContent=S.aiUsed+S.aiExtra;
+    document.getElementById('w-lv').textContent=S.lvName;
+  }
+}
+
+// ══════════════════════════════════════════
+// LESSON
+// ══════════════════════════════════════════
+function openLesson(id){
+  const tp=T.find(x=>x.id===id);if(!tp)return;
+  const ts=S.timers[id];
+  if(ts&&!S.completed.includes(id)&&(Date.now()-ts<15*3600*1000)){
+    const rem=ts+15*3600*1000-Date.now();
+    const h=Math.floor(rem/3600000),m=Math.floor((rem%3600000)/60000),s=Math.floor((rem%60000)/1000);
+    document.getElementById('tmr-val').textContent=`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    openOv('ov-tmr');return;
+  }
+  S.curLesson=id;
+  document.getElementById('les-ttl').textContent=tp.t;
+  document.getElementById('l-fml').textContent=tp.fml;
+  document.getElementById('l-fmls').textContent=tp.fmls;
+  document.getElementById('l-content').innerHTML=tp.content||'';
+  document.getElementById('w-content').innerHTML=tp.why_content||'';
+  document.getElementById('les-msgs').innerHTML=`<div class="msg m-ai"><div class="al">FizAI ⚡</div>"${tp.t}" — bu dars bo'yicha savolingiz bormi? 🔬</div>`;
+  S.lMsgs=[{role:'user',content:`Sen FizAI — fizika AI mentormisan. Hozir "${tp.t}" (${tp.fml}: ${tp.fmls}) mavzusi o'tilmoqda. O'zbek tilida qisqa, aniq, foydali javob ber. Formulalarni oddiy matn bilan yoz.`}];
+  buildTest(tp);
+  S.testDone=new Array(tp.ts.length).fill(false);
+  document.getElementById('cmp-btn').classList.remove('on');
+  document.querySelectorAll('.ltab').forEach((t,i)=>t.classList.toggle('on',i===0));
+  document.querySelectorAll('.ls').forEach(s=>s.classList.remove('on'));
+  document.getElementById('ls-dr').classList.add('on');
+  goTo('sls');
+}
+function switchLT(nm,btn){
+  document.querySelectorAll('.ls').forEach(s=>s.classList.remove('on'));
+  document.getElementById('ls-'+nm).classList.add('on');
+  document.querySelectorAll('.ltab').forEach(t=>t.classList.remove('on'));
+  if(btn)btn.classList.add('on');
+}
+function buildTest(tp){
+  document.getElementById('test-area').innerHTML=tp.ts.map((t,i)=>`<div class="tq" id="tq-${i}"><div class="tq-num">Savol ${i+1} / ${tp.ts.length}</div><div class="tq-txt">${t.q}</div><div class="topts">${t.o.map((o,j)=>`<button class="to" onclick="ansT(${i},${j})">${o}</button>`).join('')}</div><div class="tfb" id="tf-${i}">${t.f}</div></div>`).join('');
+}
+function ansT(qi,ai){
+  if(S.testDone[qi])return;
+  S.testDone[qi]=true;
+  const tp=T.find(x=>x.id===S.curLesson);
+  const t=tp.ts[qi];
+  document.getElementById('tq-'+qi).querySelectorAll('.to').forEach((b,i)=>{
+    if(i===t.a)b.classList.add('tc');
+    else if(i===ai&&ai!==t.a)b.classList.add('tw');
+    b.disabled=true;b.onclick=null;
+  });
+  const fb=document.getElementById('tf-'+qi);
+  fb.classList.add('on',ai===t.a?'ok':'fail');
+  if(S.testDone.every(Boolean))document.getElementById('cmp-btn').classList.add('on');
+}
+function completeLesson(){
+  const id=S.curLesson;
+  if(!S.completed.includes(id)){
+    S.completed.push(id);
+    const today=new Date().toDateString();
+    if(S.lastDay!==today){
+      S.streak=S.lastDay?((new Date(today)-new Date(S.lastDay))/(1000*60*60*24)<=1?S.streak+1:1):1;
+      S.lastDay=today;
+    }
+    const nextId=id+1;
+    if(nextId<=30&&!S.completed.includes(nextId))S.timers[nextId]=Date.now();
+    if(id>=S.startIdx)S.startIdx=Math.min(id+1,30);
+    save();
+  }
+  goTo('sapp');
+  document.getElementById('str-n').textContent=S.streak;
+  renderRoad();renderStats();
+}
+
+// ══════════════════════════════════════════
+// AI — Anthropic API (free, no key needed in Claude env)
+// ══════════════════════════════════════════
+async function callAI(messages,sysPrompt){
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        system:sysPrompt||'Sen FizAI — o\'zbek tilida fizika o\'rgatuvchi AI yordamchisan. Qisqa (3-5 jumla), aniq, o\'zbek tilida javob ber. Formulalarni oddiy matn bilan yoz (masalan F = m × a). Misollar keltir.',
+        messages
+      })
+    });
+    if(!res.ok){const e=await res.json();return`⚠️ Xato: ${e?.error?.message||res.status}`;}
+    const d=await res.json();
+    return d.content?.[0]?.text||'Javob kelmadi.';
+  }catch(e){
+    return`⚠️ Tarmoq xatosi. Iltimos qayta urinib ko'ring. (${e.message})`;
+  }
+}
+function addTyping(cont){
+  const d=document.createElement('div');d.className='msg m-ai';d.id='typ';
+  d.innerHTML='<div class="al">FizAI ⚡</div><div class="typing"><span></span><span></span><span></span></div>';
+  cont.appendChild(d);cont.scrollTop=cont.scrollHeight;
+}
+function rmTyping(){const t=document.getElementById('typ');if(t)t.remove();}
+function canAsk(){return S.isPrem||(S.aiUsed<(8+S.aiExtra));}
+function updateQuota(){
+  const used=S.aiUsed,extra=S.aiExtra,max=8+extra;
+  document.getElementById('q-txt').textContent=S.isPrem?`Bugun: ${used} savol (cheksiz)`:`Bugun: ${used}/${max} savol`;
+  const dotsEl=document.getElementById('q-dots');dotsEl.innerHTML='';
+  for(let i=0;i<8;i++){
+    const d=document.createElement('div');
+    d.className='qd'+(i<used&&i<8?' x':(i<max-used&&i<8?' u':''));
+    dotsEl.appendChild(d);
+  }
+  document.getElementById('ad-btn').style.display=(!S.isPrem&&S.aiUsed>=8)?'block':'none';
+}
+async function sendG(){
+  const inp=document.getElementById('g-in');
+  const txt=inp.value.trim();if(!txt)return;
+  if(!canAsk()){alert('Bugunlik savollar tugadi! Reklama ko\'ring yoki Premium oling.');return;}
+  inp.value='';
+  const cont=document.getElementById('g-msgs');
+  const um=document.createElement('div');um.className='msg m-u';um.textContent=txt;cont.appendChild(um);
+  addTyping(cont);
+  S.gMsgs.push({role:'user',content:txt});
+  S.aiUsed++;save();updateQuota();
+  const reply=await callAI(S.gMsgs);
+  rmTyping();
+  S.gMsgs.push({role:'assistant',content:reply});
+  const am=document.createElement('div');am.className='msg m-ai'+(reply.startsWith('⚠️')?' m-err':'');
+  am.innerHTML=`<div class="al">FizAI ⚡</div>${reply.replace(/\n/g,'<br>')}`;
+  cont.appendChild(am);cont.scrollTop=cont.scrollHeight;
+}
+async function sendL(){
+  const inp=document.getElementById('les-in');
+  const txt=inp.value.trim();if(!txt)return;
+  if(!canAsk()){alert('Bugunlik savollar tugadi!');return;}
+  inp.value='';
+  const cont=document.getElementById('les-msgs');
+  const um=document.createElement('div');um.className='msg m-u';um.textContent=txt;cont.appendChild(um);
+  addTyping(cont);
+  S.lMsgs.push({role:'user',content:txt});
+  S.aiUsed++;save();updateQuota();
+  const reply=await callAI(S.lMsgs);
+  rmTyping();
+  S.lMsgs.push({role:'assistant',content:reply});
+  const am=document.createElement('div');am.className='msg m-ai'+(reply.startsWith('⚠️')?' m-err':'');
+  am.innerHTML=`<div class="al">FizAI ⚡</div>${reply.replace(/\n/g,'<br>')}`;
+  cont.appendChild(am);cont.scrollTop=cont.scrollHeight;
+}
+function qAI(txt){
+  switchT('ai',document.querySelectorAll('.nv')[2]);
+  document.getElementById('g-in').value=txt;
+  sendG();
+}
+
+// ══════════════════════════════════════════
+// MODALS
+// ══════════════════════════════════════════
+function openOv(id){
+  document.getElementById(id).classList.add('on');
+  if(id==='ov-ad')startAd();
+}
+function closeOv(id){document.getElementById(id).classList.remove('on');}
+document.querySelectorAll('.ov').forEach(ov=>{
+  ov.addEventListener('click',e=>{if(e.target===ov)closeOv(ov.id);});
+});
+function openPremModal(){
+  document.getElementById('prem-plans-view').style.display='block';
+  document.getElementById('prem-success-view').style.display='none';
+  openOv('ov-prem');
+}
+function selPlan(el){document.querySelectorAll('.pl').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');}
+function buyPrem(){
+  S.isPrem=true;save();
+  // Show success screen
+  document.getElementById('prem-plans-view').style.display='none';
+  document.getElementById('prem-success-view').style.display='block';
+  // Update UI
+  document.getElementById('s-plan').textContent='Premium ⭐';
+  document.getElementById('s-plan').className='plan-badge plan-prem';
+  document.getElementById('prem-lock').style.display='none';
+  document.getElementById('wk-card').style.display='block';
+  document.getElementById('cert-si').style.display='flex';
+  renderStats();updateQuota();
+}
+
+// Ad
+function startAd(){
+  const btn=document.getElementById('btn-ad');
+  const bar=document.getElementById('ad-pf');
+  const txt=document.getElementById('ad-txt');
+  btn.classList.remove('rdy');btn.style.opacity='.3';btn.style.cursor='not-allowed';
+  bar.style.transition='none';bar.style.width='0';
+  txt.textContent='Reklama ko\'rilmoqda...';
+  setTimeout(()=>{
+    bar.style.transition='width 5s linear';bar.style.width='100%';
+    setTimeout(()=>{
+      txt.textContent='✅ Tayyor!';
+      btn.classList.add('rdy');btn.style.opacity='1';btn.style.cursor='pointer';
+    },5100);
+  },50);
+}
+function getExtra(){S.aiExtra+=2;save();closeOv('ov-ad');updateQuota();alert('✅ +2 ta qo\'shimcha savol berildi!');}
+
+// Profile edit
+function openEditModal(){
+  document.getElementById('edit-name').value=S.user?.name||'';
+  document.getElementById('edit-pass').value='';
+  const avRow=document.getElementById('av-row');
+  avRow.innerHTML=AVATARS.map(a=>`<div class="av-opt${a===(S.avatar||'👤')?' sel':''}" onclick="pickAv(this,'${a}')">${a}</div>`).join('');
+  openOv('ov-edit');
+}
+function pickAv(el,av){document.querySelectorAll('.av-opt').forEach(e=>e.classList.remove('sel'));el.classList.add('sel');S.avatar=av;}
+function saveEdit(){
+  const nm=document.getElementById('edit-name').value.trim();
+  const pw=document.getElementById('edit-pass').value;
+  if(!nm){alert('Ism bo\'sh bo\'lmasin!');return;}
+  if(S.user){S.user.name=nm;if(pw&&pw.length>=4)S.user.pass=pw;}
+  document.getElementById('s-nm').textContent=nm;
+  document.getElementById('s-av').textContent=S.avatar;
+  save();closeOv('ov-edit');
+}
+// openEditModal is accessible globally
+
+// Guide
+let gSlide=1;
+function openGuide(){
+  gSlide=1;updateGuide();openOv('ov-guide');
+}
+function updateGuide(){
+  for(let i=1;i<=5;i++)document.getElementById('gs-'+i).classList.toggle('on',i===gSlide);
+  const dots=document.getElementById('g-dots');
+  dots.innerHTML='';
+  for(let i=0;i<5;i++){const d=document.createElement('div');d.className='g-dot'+(i===gSlide-1?' on':'');dots.appendChild(d);}
+  document.getElementById('gp-prev').style.visibility=gSlide===1?'hidden':'visible';
+  const nextBtn=document.getElementById('gp-next');
+  if(gSlide===5){nextBtn.textContent='Yopish ✓';nextBtn.onclick=()=>closeOv('ov-guide');}
+  else{nextBtn.textContent='Keyingi →';nextBtn.onclick=()=>guideNav(1);}
+}
+function guideNav(dir){gSlide=Math.max(1,Math.min(5,gSlide+dir));updateGuide();}
+
+// Misc
+function showArchive(){
+  const done=T.filter(t=>S.completed.includes(t.id));
+  if(!done.length){alert('Hali hech qanday dars tugatilmagan.');return;}
+  alert('✅ Tugatilgan darslar ('+done.length+' ta):\n\n'+done.map((t,i)=>`${i+1}. ${t.t}`).join('\n'));
+}
+function openCert(){
+  if(!S.isPrem){openPremModal();return;}
+  if(S.completed.length<30){alert(`Sertifikat uchun barcha 30 mavzuni tugating!\nHozircha: ${S.completed.length}/30`);return;}
+  alert(`🎓 Tabriklaymiz ${S.user?.name||''}!\n\nFizAI Fizika Kursi Sertifikati\nSana: ${new Date().toLocaleDateString('uz-UZ')}`);
+}
+function shareProgress(){
+  const msg=`🔥 FizAI da ${S.completed.length} ta dars tugatdim! Streak: ${S.streak} kun. Daraja: ${S.lvName} ⚡`;
+  if(navigator.share)navigator.share({title:'FizAI Progress',text:msg});
+  else{navigator.clipboard?.writeText(msg);alert('✅ Nusxa olindi! Ulashingiz mumkin:\n\n'+msg);}
+}
+function sendFb(){
+  const txt=document.getElementById('fb-txt').value.trim();
+  if(!txt){alert('Fikringizni yozing!');return;}
+  alert('✅ Fikringiz uchun rahmat! Tez orada ko\'rib chiqamiz.');
+  document.getElementById('fb-txt').value='';closeOv('ov-fb');
+}
+
+// ══════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════
+(function init(){
+  load();
+  applyTheme(S.theme||'light');
+  setLang(S.lang||'uz');
+  if(S.user){updateStreak();initApp();goTo('sapp');}
+})();
+</script>
+
+<!-- TERMS MODAL -->
+<div class="ov" id="ov-terms">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="m-hd"><div class="mico">📄</div><h2>Foydalanuvchi shartnomasi</h2></div>
+    <div class="m-bd" style="max-height:55vh;overflow-y:auto">
+      <p style="font-size:.81rem;color:var(--text2);line-height:1.75;margin-bottom:12px"><b style="color:var(--text);display:block;margin-bottom:6px">FizAI ilovasidan foydalanish shartlari</b>Ushbu shartnoma FizAI ilovasidan foydalanish tartibini belgilaydi. Ilovaga kirish orqali siz quyidagi shartlarga rozilik bildirasiz.</p>
+      <p style="font-size:.81rem;color:var(--text2);line-height:1.75;margin-bottom:12px"><b style="color:var(--text);display:block;margin-bottom:4px">1. Xizmat ta&apos;rifi</b>FizAI &mdash; fizika fanini o&apos;rgatuvchi AI yordamchi dastur. Barcha materiallar ta&apos;limiy maqsadda taqdim etiladi.</p>
+      <p style="font-size:.81rem;color:var(--text2);line-height:1.75;margin-bottom:12px"><b style="color:var(--text);display:block;margin-bottom:4px">2. Foydalanuvchi majburiyatlari</b>Ilovadan faqat qonuniy va ta&apos;limiy maqsadlarda foydalanishingiz kerak. Tizimni buzishga urinish taqiqlanadi.</p>
+      <p style="font-size:.81rem;color:var(--text2);line-height:1.75;margin-bottom:12px"><b style="color:var(--text);display:block;margin-bottom:4px">3. Premium xizmat</b>Premium imkoniyatlar to&apos;lovli asosda taqdim etiladi. To&apos;lov qaytarilmaydi, lekin bekor qilish mumkin.</p>
+      <p style="font-size:.81rem;color:var(--text2);line-height:1.75;margin-bottom:12px"><b style="color:var(--text);display:block;margin-bottom:4px">4. O&apos;zgartirishlar</b>Biz ushbu shartlarni istalgan vaqtda o&apos;zgartirish huquqini saqlaymiz. O&apos;zgarishlar ilovada e&apos;lon qilinadi.</p>
+      <p style="font-size:.75rem;color:var(--text3)">Ishlab chiquvchilar: Shavkatov Rustam &amp; Rahmatov Shoxjahon &middot; FizAI v2.0 &middot; 2025</p>
+    </div>
+    <div style="padding:0 22px 22px"><button class="btn-main" onclick="closeOv('ov-terms')">Tushunarli ✓</button></div>
+  </div>
+</div>
+
+<!-- PRIVACY MODAL -->
+<div class="ov" id="ov-privacy">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="m-hd"><div class="mico">🔒</div><h2>Maxfiylik siyosati</h2></div>
+    <div class="m-bd" style="max-height:55vh;overflow-y:auto">
+      <p style="font-size:.81rem;color:var(--text2);line-height:1.75;margin-bottom:12px"><b style="color:var(--text);display:block;margin-bottom:6px">Ma&apos;lumotlar xavfsizligi</b>FizAI sizning shaxsiy ma&apos;lumotlaringizni himoya qilishni ustuvor yo&apos;nalish deb biladi.</p>
+      <p style="font-size:.81rem;color:var(--text2);line-height:1.75;margin-bottom:12px"><b style="color:var(--text);display:block;margin-bottom:4px">1. Saqlanadigan ma&apos;lumotlar</b>Faqat ism va parol qurilma xotirasida (localStorage) saqlanadi. Server tomonida hech qanday shaxsiy ma&apos;lumot saqlanmaydi.</p>
+      <p style="font-size:.81rem;color:var(--text2);line-height:1.75;margin-bottom:12px"><b style="color:var(--text);display:block;margin-bottom:4px">2. AI xizmati</b>AI chat xizmatida berilgan savollar Anthropic API orqali qayta ishlanadi. Anthropic o&apos;z maxfiylik siyosatiga rioya qiladi.</p>
+      <p style="font-size:.81rem;color:var(--text2);line-height:1.75;margin-bottom:12px"><b style="color:var(--text);display:block;margin-bottom:4px">3. Uchinchi tomonlar</b>Biz foydalanuvchi ma&apos;lumotlarini hech qanday uchinchi tomonga bermaylik. Faqat AI API uchun savol matni yuboriladi.</p>
+      <p style="font-size:.81rem;color:var(--text2);line-height:1.75;margin-bottom:12px"><b style="color:var(--text);display:block;margin-bottom:4px">4. Bog&apos;lanish</b>Savollar uchun: @ShavkatovRustam (Telegram)</p>
+      <p style="font-size:.75rem;color:var(--text3)">Ishlab chiquvchilar: Shavkatov Rustam &amp; Rahmatov Shoxjahon &middot; FizAI v2.0 &middot; 2025</p>
+    </div>
+    <div style="padding:0 22px 22px"><button class="btn-main" onclick="closeOv('ov-privacy')">Tushunarli ✓</button></div>
+  </div>
+</div>
+</body>
+</html>
